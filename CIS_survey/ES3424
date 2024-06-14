@@ -1,0 +1,824 @@
+DATA LIST FILE= 'DA3424'/ESTUDIO 1-4 REGISTRO 5-10 CUES 11-14 CCAA 15-16 PROV 17-18 MUN 19-21 CAPITAL 22 TAMUNI 23 ENTREV 24-28
+TIPO_TEL 29 SEXO 30 EDAD 31-32 P0 33 INTPOL 34 IMPIDEAS 35 INESTADO1 36 INESTADO2 37-38 CONFIANZA_1 39-40
+CONFIANZA_2 41-42 CONFIANZA_3 43-44 CONFIANZA_4 45-46 CONFIANZA_5 47-48 CONFIANZA_6 49-50 CONFIANZA_7 51-52
+CONFIANZA_RETR_1 53 CONFIANZA_RETR_2 54 CONFIANZA_RETR_3 55 CONFIANZA_RETR_4 56 CONFIANZA_RETR_5 57
+CONFIANZA_RETR_6 58 CONFIANZA_RETR_7 59 CONFIANZA_PROS_1 60 CONFIANZA_PROS_2 61 CONFIANZA_PROS_3 62
+CONFIANZA_PROS_4 63 CONFIANZA_PROS_5 64 CONFIANZA_PROS_6 65 CONFIANZA_PROS_7 66 INFLUPOL1 67-68
+INFLUPOL2 69-70 FUTUR1 71 FUTUR2 72 INFLUPAISES_1 73 INFLUPAISES_2 74 INFLUPAISES_3 75 INFLUPAISES_4 76
+INFLUPAISES_5 77 INFLUPAISES_6 78 INFLUPAISES_7 79 SAT1 80 SAT2 81-82 DESIN_1 83 DESIN_2 84
+DESIN_3 85 DESIN_4 86 DESIN_5 87 DESIN_6 88 DESIN_7 89 DESIN_8 90 SIMBOL1 91-92 SIMBOL2 93-94
+PROBLMUN1 95-96 PROBLMUN2 97-98 PROBLMUN3 99-100 IDEASPROS1_1 101 IDEASPROS1_2 102 IDEASPROS1_3 103
+IDEASPROS1_4 104 IDEASPROS1_5 105 IDEASPROS1_6 106 IDEASPROS1_7 107 IDEASPROS2_1 108 IDEASPROS2_2 109
+IDEASPROS2_3 110 IDEASPROS2_4 111 IDEASPROS2_5 112 IDEASPROS2_6 113 IDEASPROS2_7 114 IDEASPROS2_8 115
+IDEASPROS3_1 116 IDEASPROS3_2 117 IDEASPROS3_3 118 IDEASPROS3_4 119 IDEASPROS3_5 120 IDEASPROS3_6 121
+IDEASPROS3_7 122 IDEASPROS4_1 123 IDEASPROS4_2 124 IDEASPROS4_3 125 IDEASPROS4_4 126 IDEASPROS4_5 127
+IDEASPROS4_6 128 IDEASPROS5_1 129 IDEASPROS5_2 130 IDEASPROS5_3 131 IDEASPROS5_4 132 IDENTIFIC1 133-134
+IDENTIFIC2 135-136 ESCIDEOL 137-138 PARTICIPACIONG 139 RECUERDO 140-143 ESCUELA 144 NIVELESTENTREV 145-146
+RELIGION 147 SITLAB 148 RELALAB 149 CNO11 150-151 OPINION 152 CLASESOCIAL 153-154 CLASESUB 155
+IA_I501 156 IA_I502 157 IA_I503 158 IA_I504 159 IA_I505 160 IA_I506 161 IA_I507 162-164 IA_I508 165
+IA_I509 166 IA_I510 167 IA_I511 168 IA_I512 169 IA_I513 170 IA_I514 171 IA_I515 172 IA_I516 173
+IA_I517 174 IA_I518 175 IA_I519 176 IA_I520 177 IA_I521 178 IA_I522 179 IA_I523 180 IA_I524 181
+IA_I525 182 IA_I526 183 IA_I528 184 IA_I529 185-186 IA_I530 187 IA_I531 188 IA_I532 189 IA_I533 190
+IA_I534 191-192 IA_I535 193-194 IA_I536 195 IA_I537 196-198 IA_I538 199 IA_I539 200 IA_I540 201
+IA_I541 202 IA_I542 203-205 IA_I543 206-207 IA_OBS1 208-215(2) IA_OBS2 216-223(2) IA_E1_DIA 224-225
+IA_E1_MES 226-227 IA_E1_ANYO 228-229 IA_E2 230 IA_E3 231-232 IA_E4 233 IA_VALIDA 234 IA_APLAZADA 235
+IA_MODIFICADA 236 IA_SUPERVISADA 237 IA_C2 238 IA_C2A 239 IA_C2B_1 240 IA_C2B_2 241 IA_C2B_3 242
+IA_C2B_4 243 IA_C2B_5 244 IA_C2B_6 245 IA_C2B_7 246 IA_C2B_8 247 IA_C2B_9 248 IA_C2B_10 249
+IA_C2B_11 250 IA_C2B_12 251 IA_C2B_13 252 IA_C2B_14 253 IA_C2B_15 254 IA_C2B_16 255 IA_C2B_17 256
+IA_C2B_18 257 IA_C2B_19 258 IA_C2B_20 259 IA_C2B_21 260 IA_C2B_22 261 IA_C2B_23 262 IA_C2B_24 263
+IA_C2B_25 264 IA_C3 265 IA_C4 266-270 RECUVOTOGR 271-274 RECUVOTOG 275-278 ESTUDIOS 279 CNO11R 280-281
+PESO 282-288(5) .
+
+VARIABLE LABELS
+ESTUDIO 'Código del estudio'
+/REGISTRO 'Número de registro'
+/CUES 'Cuestionario'
+/CCAA 'Comunidad autónoma'
+/PROV 'Provincia'
+/MUN 'Municipio'
+/CAPITAL 'Capital'
+/TAMUNI 'Tamaño de municipio'
+/ENTREV 'Entrevistador/a'
+/TIPO_TEL 'Tipo de teléfono'
+/SEXO 'Sexo de la persona entrevistada'
+/EDAD 'Edad de la persona entrevistada'
+/P0 'Nacionalidad de la persona entrevistada'
+/INTPOL 'Grado de interés por la política'
+/IMPIDEAS 'Preferencia entre dar más importancia social a la igualdad o la meritocracia'
+/INESTADO1 'Preferencia entre liberalismo económico o intervención del Estado en la economía'
+/INESTADO2 'Preferencia entre planificación total de la actividad económica por el Estado o intervenciones sectoriales'
+/CONFIANZA_1 'En los partidos políticos'
+/CONFIANZA_2 'En los sindicatos'
+/CONFIANZA_3 'En el Gobierno de España'
+/CONFIANZA_4 'En el Parlamento español'
+/CONFIANZA_5 'En los medios de comunicación social (prensa, radio, televisiones)'
+/CONFIANZA_6 'En la Justicia'
+/CONFIANZA_7 'En la Constitución de 1978'
+/CONFIANZA_RETR_1 'En los partidos políticos'
+/CONFIANZA_RETR_2 'En los sindicatos'
+/CONFIANZA_RETR_3 'En el Gobierno de España'
+/CONFIANZA_RETR_4 'En el Parlamento español'
+/CONFIANZA_RETR_5 'En los medios de comunicación social (prensa, radio, televisiones)'
+/CONFIANZA_RETR_6 'En la Justicia'
+/CONFIANZA_RETR_7 'En la Constitución de 1978'
+/CONFIANZA_PROS_1 'En los partidos políticos'
+/CONFIANZA_PROS_2 'En los sindicatos'
+/CONFIANZA_PROS_3 'En el Gobierno de España'
+/CONFIANZA_PROS_4 'En el Parlamento español'
+/CONFIANZA_PROS_5 'En los medios de comunicación social (prensa, radio, televisiones)'
+/CONFIANZA_PROS_6 'En la Justicia'
+/CONFIANZA_PROS_7 'En la Constitución de 1978'
+/INFLUPOL1 'Primer lugar'
+/INFLUPOL2 'Segundo lugar'
+/FUTUR1 'Valoración prospectiva de la cantidad de cambios sociales y económicos (diez años)'
+/FUTUR2 'Opinión prospectiva sobre los efectos de los cambios sociales y económicos'
+/INFLUPAISES_1 'Unión Europea'
+/INFLUPAISES_2 'Estados Unidos'
+/INFLUPAISES_3 'Japón'
+/INFLUPAISES_4 'Rusia'
+/INFLUPAISES_5 'China'
+/INFLUPAISES_6 'Países árabes'
+/INFLUPAISES_7 'Países latinoamericanos'
+/SAT1 'Valoración prospectiva del grado de aumento de la robotización y los sistemas automáticos de trabajo en las empresas (diez años)'
+/SAT2 'Valoración prospectiva de la influencia de la robotización y los sistemas automáticos de trabajo en el futuro del empleo (diez años)'
+/DESIN_1 'Los robots industriales y los sistemas automáticos de trabajo'
+/DESIN_2 'La biotecnología'
+/DESIN_3 'Las nuevas fuentes de energía (por ejemplo: solar, eólica)'
+/DESIN_4 'La microelectrónica, los ordenadores'
+/DESIN_5 'La ingeniería genética'
+/DESIN_6 'Las nuevas tecnologías del ocio y del esparcimiento (por ejemplo: los videojuegos)'
+/DESIN_7 'Las nuevas tecnologías del hogar'
+/DESIN_8 'Los transportes'
+/SIMBOL1 'Primer lugar'
+/SIMBOL2 'Segundo lugar'
+/PROBLMUN1 'Primera respuesta'
+/PROBLMUN2 'Segunda respuesta'
+/PROBLMUN3 'Tercera respuesta'
+/IDEASPROS1_1 'Creencias religiosas'
+/IDEASPROS1_2 'Interés en las cosas materiales (propiedades)'
+/IDEASPROS1_3 'Interés por el propio éxito'
+/IDEASPROS1_4 'Libertad sexual'
+/IDEASPROS1_5 'Violencia'
+/IDEASPROS1_6 'Mujeres en puestos de responsabilidad'
+/IDEASPROS1_7 'Integración de las personas con discapacidad'
+/IDEASPROS2_1 'Relación con la familia o lazos familiares'
+/IDEASPROS2_2 'Separaciones y divorcios'
+/IDEASPROS2_3 'Nacimientos, natalidad'
+/IDEASPROS2_4 'Soledad o aislamiento'
+/IDEASPROS2_5 'Cuidados familiares a los/as mayores'
+/IDEASPROS2_6 'Tiempo libre para el ocio'
+/IDEASPROS2_7 'Personas realizadas o que disfruten con su trabajo'
+/IDEASPROS2_8 'Interés por la salud y el cuidado personal'
+/IDEASPROS3_1 'Paro o falta de trabajo'
+/IDEASPROS3_2 'Diferencias sociales y económicas'
+/IDEASPROS3_3 'Consumo de drogas'
+/IDEASPROS3_4 'SIDA y otras enfermedades víricas'
+/IDEASPROS3_5 'Delincuencia'
+/IDEASPROS3_6 'Protección social del Estado'
+/IDEASPROS3_7 'Igualdad de oportunidades'
+/IDEASPROS4_1 'Deterioro del medio ambiente'
+/IDEASPROS4_2 'Muertes por cáncer'
+/IDEASPROS4_3 'Robots que sustituyen a trabajadores/as'
+/IDEASPROS4_4 'Racismo y xenofobia'
+/IDEASPROS4_5 'Personas teletrabajando en casa'
+/IDEASPROS4_6 'Epidemias graves como la de COVID-19'
+/IDEASPROS5_1 'Desigualdades entre países pobres y ricos'
+/IDEASPROS5_2 'Guerras y conflictos internacionales'
+/IDEASPROS5_3 'Personas que emigren de los países pobres a los ricos'
+/IDEASPROS5_4 'Eficacia de la ONU (Organización de Naciones Unidas)'
+/IDENTIFIC1 'Primer lugar'
+/IDENTIFIC2 'Segundo lugar'
+/ESCIDEOL 'Escala de autoubicación ideológica (1-10)'
+/PARTICIPACIONG 'Participación electoral en las elecciones generales de 2023'
+/RECUERDO 'Recuerdo de voto en las elecciones generales de 2023'
+/ESCUELA 'Escolarización de la persona entrevistada'
+/NIVELESTENTREV 'Nivel de estudios alcanzado por la persona entrevistada'
+/RELIGION 'Religiosidad de la persona entrevistada'
+/SITLAB 'Situación laboral de la persona entrevistada'
+/RELALAB 'Situación profesional de la persona entrevistada'
+/CNO11 'Ocupación de la persona entrevistada'
+/OPINION 'Expectativas de bienestar para las nuevas generaciones'
+/CLASESOCIAL 'Clase social subjetiva de la persona entrevistada'
+/CLASESUB 'Identificación subjetiva de clase'
+/IA_I501 'Dificultad de acceso al edificio, casa, urbanización, etc.'
+/IA_I502 'Viviendas en las que no hay nadie'
+/IA_I503 'Viviendas en las que se niegan a recibir ninguna explicación'
+/IA_I504 'Negativas de hombres a realizar la entrevista'
+/IA_I505 'Negativas de mujeres a realizar la entrevista'
+/IA_I506 'Contactos fallidos por no cumplir cuotas'
+/IA_I507 'Contactos fallidos por no ser una vivienda (oficinas, consultas médicas, etc.)'
+/IA_I508 'Viviendas de población extranjera'
+/IA_I509 '01.  No quiere colaborar'
+/IA_I510 '02.  Falta de tiempo. Está muy ocupado/a'
+/IA_I511 '03.  Falta de interés por hacer una encuesta'
+/IA_I512 '04.  Desconfianza hacia las encuestas'
+/IA_I513 '05.  Desconfianza hacia el CIS'
+/IA_I514 '06.  Rehúsa porque su pareja/familia/hogar no quiere'
+/IA_I515 '07.  Lo considera una pérdida de tiempo'
+/IA_I516 '08.  No sabe lo suficiente/nada del tema, demasiado difícil'
+/IA_I517 '09.  El tema no le interesa'
+/IA_I518 '10.  Resulta demasiada larga'
+/IA_I519 '11.  No le gusta el ordenador'
+/IA_I520 '96. Otras'
+/IA_I521 '99. No contesta'
+/IA_I522 '00. Error al iniciar'
+/IA_I523 'Teléfono apagado/fuera de cobertura'
+/IA_I524 'Negativas a realizar la entrevista'
+/IA_I525 'Interrupción llamada'
+/IA_I526 'Dificultad con el idioma'
+/IA_I528 'Contacto fallido por no ser una vivienda/persona'
+/IA_I529 'Contacto fallido por no ser elegible'
+/IA_I530 'Incapacidad para responder/ininteligible'
+/IA_I531 'Otras'
+/IA_I532 'No le gusta dar información por teléfono'
+/IA_I533 'No tiene la garantía de la privacidad de sus datos'
+/IA_I534 'Dificultad con el idioma'
+/IA_I535 'Incapacidad para responder/ininteligible'
+/IA_I536 'No elegible'
+/IA_I537 'Rechazo por falta de tiempo o de interés en la encuesta'
+/IA_I538 'Rechazo por desconfianza hacia las encuestas'
+/IA_I539 'Rechazo por desconfianza hacia el CIS'
+/IA_I540 'Rechazo por desconfiar de la llamada o por mantener la privacidad'
+/IA_I541 'Rechaza ser encuestado/a en el idioma del cuestionario'
+/IA_I542 'Rechazo por otras razones o sin dar explicaciones'
+/IA_I543 'Otras incidencias'
+/IA_OBS1 'Pregunta incómoda'
+/IA_OBS2 'Pregunta explicada'
+/IA_E1_DIA 'Día de realización'
+/IA_E1_MES 'Mes de realización'
+/IA_E1_ANYO 'Año de realización'
+/IA_E2 'Día de la semana que se realiza la entrevista'
+/IA_E3 'Duración de la entrevista en minutos'
+/IA_E4 'Hora de realización'
+/IA_VALIDA 'Entrevista válida'
+/IA_APLAZADA 'Entrevista con aplazamientos'
+/IA_MODIFICADA 'Entrevista modificada'
+/IA_SUPERVISADA 'Entrevista supervisada'
+/IA_C2 'Valoración de la supervisión'
+/IA_C2A 'Resultado supervisión'
+/IA_C2B_1 'Motivos entrevista incorrecta: Dirección inexistente (no existe número en la calle, piso, etc...)'
+/IA_C2B_2 'Motivos entrevista incorrecta: Dirección ilocalizable (faltan datos: número, piso, letra, etc...)'
+/IA_C2B_3 'Motivos entrevista incorrecta: No coinciden datos personales y no ha sido realizada en la dirección que se hace constar'
+/IA_C2B_4 'Motivos entrevista incorrecta: Negativa que ofrece dudas. Coinciden datos personales pero niegan haber realizado la entrevista'
+/IA_C2B_5 'Motivos entrevista incorrecta: Realizada a una persona, recogiendo los datos de otra'
+/IA_C2B_6 'Motivos entrevista incorrecta: Realizada cambiando género del entrevistado'
+/IA_C2B_7 'Motivos entrevista incorrecta: Cambio de edad por otra de un tramo contiguo'
+/IA_C2B_8 'Motivos entrevista incorrecta: Cambio de edad por otra de un tramo no contiguo'
+/IA_C2B_9 'Motivos entrevista incorrecta: Realizada fuera de la vivienda pero vive en la sección electoral'
+/IA_C2B_10 'Motivos entrevista incorrecta: Realizada fuera de la vivienda, y no vive en la sección electoral'
+/IA_C2B_11 'Motivos entrevista incorrecta: Realizada en dirección que no corresponde a la sección electoral'
+/IA_C2B_12 'Motivos entrevista incorrecta: Realizada, pero no respeta las normas de ruta'
+/IA_C2B_13 'Motivos entrevista incorrecta: Se detecta que no ha hecho todas las preguntas'
+/IA_C2B_14 'Motivos entrevista incorrecta: Negativa que ofrece dudas: no coincide la dirección ni datos personales. Posibilidad de error en el teléfono'
+/IA_C2B_15 'Motivos entrevista incorrecta: No hay grabación'
+/IA_C2B_16 'Motivos entrevista incorrecta: Realizada en otro idioma'
+/IA_C2B_17 'Motivos entrevista incorrecta: Realizada en un establecimiento o negocio, no es un domicilio'
+/IA_C2B_18 'Motivos entrevista incorrecta: Valores de cuota anotados incorrectamente, distintos de sexo y edad (provincia/municipio/situación laboral)'
+/IA_C2B_19 'Motivos entrevista incorrecta: No se lee el protocolo de inicio o fin de la encuesta'
+/IA_C2B_20 'Motivos entrevista incorrecta: Entrevista interrumpida y autocompletada'
+/IA_C2B_21 'Motivos entrevista incorrecta: No se leen  literalmente las preguntas y/o las opciones de respuesta'
+/IA_C2B_22 'Motivos entrevista incorrecta: Induce las respuestas'
+/IA_C2B_23 'Motivos entrevista incorrecta: No se recogen fielmente las respuestas espontáneas'
+/IA_C2B_24 'Motivos entrevista incorrecta: Lee las categorías de respuesta cuando ésta es espontánea'
+/IA_C2B_25 'Motivos entrevista incorrecta: Codificación incorrecta por parte del entrevistador (Ej. estudios, problemas, preguntas precodificadas…)'
+/IA_C3 'Resultado final'
+/IA_C4 'Supervisor'
+/RECUVOTOGR 'Recuerdo de voto en las elecciones generales de 2023 de los votantes [recodificada]'
+/RECUVOTOG 'Recuerdo de voto en las elecciones generales de 2023 de los votantes'
+/ESTUDIOS 'Estudios de la persona entrevistada'
+/CNO11R 'Población activa e inactiva'
+/PESO 'Ponderación considerando estudios para los cálculos'
+.
+
+VALUE LABELS
+ESTUDIO
+/REGISTRO
+/CUES
+/CCAA
+1 'Andalucía' 2 'Aragón' 3 'Asturias (Principado de)' 4 'Balears (Illes)' 5 'Canarias' 6 'Cantabria'
+7 'Castilla-La Mancha' 8 'Castilla y León' 9 'Cataluña' 10 'Comunitat Valenciana' 11 'Extremadura'
+12 'Galicia' 13 'Madrid (Comunidad de)' 14 'Murcia (Región de)' 15 'Navarra (Comunidad Foral de)'
+16 'País Vasco' 17 'Rioja (La)' 18 'Ceuta (Ciudad Autónoma de)' 19 'Melilla (Ciudad Autónoma de)'
+/PROV
+1 'Araba/Álava' 2 'Albacete' 3 'Alicante/Alacant' 4 'Almería' 33 'Asturias' 5 'Ávila' 6 'Badajoz'
+7 'Balears (Illes)' 8 'Barcelona' 9 'Burgos' 10 'Cáceres' 11 'Cádiz' 39 'Cantabria' 12 'Castellón/Castelló'
+13 'Ciudad Real' 14 'Córdoba' 15 'Coruña (A)' 16 'Cuenca' 17 'Girona' 18 'Granada' 19 'Guadalajara'
+20 'Gipuzkoa' 21 'Huelva' 22 'Huesca' 23 'Jaén' 24 'León' 25 'Lleida' 27 'Lugo' 28 'Madrid'
+29 'Málaga' 30 'Murcia' 31 'Navarra' 32 'Ourense' 34 'Palencia' 35 'Palmas (Las)' 36 'Pontevedra'
+26 'Rioja (La)' 37 'Salamanca' 38 'Santa Cruz de Tenerife' 40 'Segovia' 41 'Sevilla' 42 'Soria'
+43 'Tarragona' 44 'Teruel' 45 'Toledo' 46 'Valencia/València' 47 'Valladolid' 48 'Bizkaia' 49 'Zamora'
+50 'Zaragoza' 51 'Ceuta' 52 'Melilla'
+/MUN
+0 'Mun.<=100.000 hab. no capitales de CA o provincia' 1 'Ceuta / Melilla' 3 'Albacete' 4 'Algeciras'
+5 'Alcalá de Henares' 6 'Alcobendas' 7 'Alcorcón' 12 'Cádiz' 13 'Almería / Barakaldo' 14 'Alicante/Alacant'
+15 'Badalona / Badajoz' 16 'Cartagena / Palmas de Gran Canaria (Las)' 19 'Ávila / Barcelona'
+20 'Bilbao / Jerez de la Frontera' 21 'Córdoba' 23 'La Laguna' 24 'Gijón' 26 'Telde' 28 'Lugo'
+30 'Coruña (A) / Murcia' 34 'Ciudad Real' 37 'Cáceres' 38 'Pontevedra / Santa Cruz de Tenerife / Dos Hermanas'
+40 'Castellón de la Plana/Castelló de la Plana / Palma de Mallorca' 41 'Huelva' 44 'Oviedo'
+50 'Jaén' 54 'Ourense' 57 'Vigo' 58 'Fuenlabrada' 59 'Burgos / Vitoria-Gasteiz' 65 'Elche/Elx / Getafe'
+67 'Málaga' 69 'Donostia/San Sebastián / Marbella' 74 'Leganés' 75 'Santander' 78 'Cuenca / Santiago de Compostela'
+79 'Girona / Madrid' 83 'Mérida' 87 'Granada' 89 'León / Logroño' 91 'Sevilla' 92 'Móstoles'
+101 'Hospitalet de Llobregat' 106 'Parla' 120 'Lleida / Palencia' 121 'Mataró' 123 'Reus' 125 'Huesca'
+130 'Guadalajara' 148 'Tarragona / Torrejón de Ardoz' 168 'Toledo' 173 'Soria' 186 'Valladolid'
+187 'Sabadell' 194 'Segovia' 201 'Pamplona/Iruña' 216 'Teruel' 245 'Santa Coloma de Gramenet'
+250 'València' 274 'Salamanca' 275 'Zamora' 279 'Terrassa' 297 'Zaragoza'
+/CAPITAL
+1 'Capital de CC.AA.' 2 'Capital de provincia' 3 'Otros municipios'
+/TAMUNI
+1 'Menos o igual a 2.000 habitantes' 2 '2.001 a 10.000 habitantes' 3 '10.001 a 50.000 habitantes'
+4 '50.001 a 100.000 habitantes' 5 '100.001 a 400.000 habitantes' 6 '400.001 a 1.000.000 habitantes'
+7 'Más de 1.000.000 habitantes'
+/ENTREV
+0 'Anonimizado'
+/TIPO_TEL
+1 'Fijo' 2 'Móvil'
+/SEXO
+1 'Hombre' 2 'Mujer'
+/EDAD
+99 'N.C.'
+/P0
+1 'Sólo la nacionalidad española' 2 'La nacionalidad española y otra' 3 'Sólo otra nacionalidad'
+/INTPOL
+1 'Mucho' 2 'Bastante' 3 'Regular' 4 'Poco' 5 'Nada' 8 'N.S.' 9 'N.C.'
+/IMPIDEAS
+1 'A favorecer la igualdad y solidaridad entre las personas' 2 'A hacer posible que cada cual llegue lo más alto que pueda con su esfuerzo y su trabajo'
+3 '(NO LEER) Un equilibrio entre los dos aspectos' 4 '(NO LEER) Está en duda' 8 'N.S.' 9 'N.C.'
+/INESTADO1
+1 'El Estado no debe intervenir en la vida económica' 2 'El Estado sí debe intervenir en la economía'
+3 '(NO LEER) Depende de las condiciones económicas' 4 '(NO LEER) Está en duda' 8 'N.S.' 9 'N.C.'
+/INESTADO2
+1 'El Estado debe dirigir y planificar toda la actividad económica' 2 'El Estado debe intervenir sólo en determinados sectores de interés público y fijando orientaciones generales'
+3 '(NO LEER) Está en duda' 4 'El Estado debe intervenir lo mínimo, y sólo en determinados casos'
+96 'Otras posturas' 98 'N.S.' 99 'N.C.' 0 'N.P.'
+/CONFIANZA_1
+1 '1 Mínima confianza' 10 '10 Máxima confianza' 98 'N.S.' 99 'N.C.'
+/CONFIANZA_2
+1 '1 Mínima confianza' 10 '10 Máxima confianza' 98 'N.S.' 99 'N.C.'
+/CONFIANZA_3
+1 '1 Mínima confianza' 10 '10 Máxima confianza' 98 'N.S.' 99 'N.C.'
+/CONFIANZA_4
+1 '1 Mínima confianza' 10 '10 Máxima confianza' 98 'N.S.' 99 'N.C.'
+/CONFIANZA_5
+1 '1 Mínima confianza' 10 '10 Máxima confianza' 98 'N.S.' 99 'N.C.'
+/CONFIANZA_6
+1 '1 Mínima confianza' 10 '10 Máxima confianza' 98 'N.S.' 99 'N.C.'
+/CONFIANZA_7
+1 '1 Mínima confianza' 10 '10 Máxima confianza' 98 'N.S.' 99 'N.C.'
+/CONFIANZA_RETR_1
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/CONFIANZA_RETR_2
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/CONFIANZA_RETR_3
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/CONFIANZA_RETR_4
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/CONFIANZA_RETR_5
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/CONFIANZA_RETR_6
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/CONFIANZA_RETR_7
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/CONFIANZA_PROS_1
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/CONFIANZA_PROS_2
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/CONFIANZA_PROS_3
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/CONFIANZA_PROS_4
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/CONFIANZA_PROS_5
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/CONFIANZA_PROS_6
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/CONFIANZA_PROS_7
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/INFLUPOL1
+1 'Alguna persona concreta (de sus familiares, amigos/as, conocidos/as…)' 2 'Un/a candidato/a, las actuaciones de los/as candidatos/as'
+3 'La radio' 4 'La televisión' 5 'Las redes sociales, Internet' 6 'Los periódicos' 7 'Las revistas'
+8 'Su propia ideología (propias creencias, propia opinión, propio criterio...)' 9 'Su propia experiencia (estudios, formación, trabajo, observación...)'
+10 'Los programas electorales' 11 'Los partidos políticos' 12 'La situación política, económica y social del país'
+13 'Los medios de comunicación en general' 96 'Otra respuesta' 14 'Todo' 97 '(NO LEER) Ninguna, nada/ninguna más'
+98 'N.S.' 99 'N.C.'
+/INFLUPOL2
+1 'Alguna persona concreta (de sus familiares, amigos/as, conocidos/as…)' 2 'Un/a candidato/a, las actuaciones de los/as candidatos/as'
+3 'La radio' 4 'La televisión' 5 'Las redes sociales, Internet' 6 'Los periódicos' 7 'Las revistas'
+8 'Su propia ideología (propias creencias, propia opinión, propio criterio...)' 9 'Su propia experiencia (estudios, formación, trabajo, observación...)'
+10 'Los programas electorales' 11 'Los partidos políticos' 12 'La situación política, económica y social del país'
+13 'Los medios de comunicación en general' 96 'Otra respuesta' 14 'Todo' 97 '(NO LEER) Ninguna, nada/ninguna más'
+98 'N.S.' 99 'N.C.'
+/FUTUR1
+1 'Muchos cambios' 2 'Bastantes cambios' 3 '(NO LEER) Regular, ni muchos ni pocos' 4 'Pocos cambios'
+5 'Ningún o casi ningún cambio' 8 'N.S., duda' 9 'N.C.'
+/FUTUR2
+1 'Muy positivos' 2 'Positivos' 3 'Negativos' 4 'Muy negativos' 5 'Indiferentes' 6 '(NO LEER) En parte positivos y en parte negativos'
+8 'N.S., duda' 9 'N.C.' 0 'N.P.'
+/INFLUPAISES_1
+1 'Mayor que ahora' 2 'Menor que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/INFLUPAISES_2
+1 'Mayor que ahora' 2 'Menor que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/INFLUPAISES_3
+1 'Mayor que ahora' 2 'Menor que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/INFLUPAISES_4
+1 'Mayor que ahora' 2 'Menor que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/INFLUPAISES_5
+1 'Mayor que ahora' 2 'Menor que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/INFLUPAISES_6
+1 'Mayor que ahora' 2 'Menor que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/INFLUPAISES_7
+1 'Mayor que ahora' 2 'Menor que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/SAT1
+1 'Aumentarán mucho' 2 'Aumentarán bastante' 3 'Aumentarán algo' 4 'Aumentarán poco' 5 'No aumentarán nada o casi nada'
+8 'N.S., duda' 9 'N.C.'
+/SAT2
+1 'Dará lugar a un aumento del paro' 2 'Dará lugar a la creación de más puestos de trabajo'
+3 'Cree que todo seguirá prácticamente igual, que no influirá en el desempleo' 4 '(NO LEER) Está en duda'
+5 'Se destruirá empleo y se crearán nuevos puestos de trabajo' 96 'Otras respuestas' 98 'N.S.'
+99 'N.C.'
+/DESIN_1
+1 'Mucho' 2 'Bastante' 3 'Regular' 4 'Poco' 5 'Nada o casi nada' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/DESIN_2
+1 'Mucho' 2 'Bastante' 3 'Regular' 4 'Poco' 5 'Nada o casi nada' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/DESIN_3
+1 'Mucho' 2 'Bastante' 3 'Regular' 4 'Poco' 5 'Nada o casi nada' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/DESIN_4
+1 'Mucho' 2 'Bastante' 3 'Regular' 4 'Poco' 5 'Nada o casi nada' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/DESIN_5
+1 'Mucho' 2 'Bastante' 3 'Regular' 4 'Poco' 5 'Nada o casi nada' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/DESIN_6
+1 'Mucho' 2 'Bastante' 3 'Regular' 4 'Poco' 5 'Nada o casi nada' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/DESIN_7
+1 'Mucho' 2 'Bastante' 3 'Regular' 4 'Poco' 5 'Nada o casi nada' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/DESIN_8
+1 'Mucho' 2 'Bastante' 3 'Regular' 4 'Poco' 5 'Nada o casi nada' 8 '(NO LEER) N.S., duda' 9 'N.C.'
+/SIMBOL1
+1 'La máquina fabril, la maquinaria industrial y agrícola' 2 'La televisión y la smart TV' 3 'El coche, la automoción, el coche eléctrico e híbrido'
+4 'La radio' 5 'El ordenador, el portátil' 6 'El robot, la robótica, la domótica en general'
+7 'El avión' 8 'El teléfono móvil, el smartphone' 9 'Internet, wifi, rúter, fibra, conectividad'
+10 'Los trenes de alta velocidad' 11 'Los satélites espaciales, las naves, los viajes espaciales, la tecnología espacial'
+12 'Los medios de transporte en general' 13 'El patinete y la bicicleta eléctricos' 14 'El robot aspirador y el robot de cocina'
+15 'Los electrodomésticos: lavadora, secadora, frigorífico y lavaplatos' 16 'Los electrodomésticos para la climatización (aire acondicionado, calefacción)'
+17 'La tablet' 18 'Las videoconsolas y los videojuegos' 19 'Los microchips, la microtecnología'
+20 'Los relojes inteligentes' 21 'Las baterías' 22 'Los drones' 23 'La tecnología en general, las aplicaciones tecnológicas, la inteligencia artificial'
+24 'El software y la informática' 25 'La maquinaria y la tecnología médica, la biotecnología'
+26 'Las vacunas' 27 'El dinero, las tarjetas, los cajeros, los nuevos medios de pago' 28 'Las redes sociales'
+29 'Los medios de comunicación, las telecomunicaciones, las plataformas audiovisuales, de compras o entretenimiento'
+30 'Las energías renovables, los paneles solares, los generadores eólicos' 31 'La electrónica'
+32 'Otros electrodomésticos (freidora, microondas)' 33 'Otros objetos de uso doméstico (la mascarilla, la fregona, la rueda, etc.)'
+34 'El armamento, material bélico' 35 'El metaverso, la realidad virtual' 36 'Las energías no renovables y sus derivados'
+96 'Otro' 97 'Ninguno/ninguno más' 98 'N.S.' 99 'N.C.'
+/SIMBOL2
+1 'La máquina fabril, la maquinaria industrial y agrícola' 2 'La televisión y la smart TV' 3 'El coche, la automoción, el coche eléctrico e híbrido'
+4 'La radio' 5 'El ordenador, el portátil' 6 'El robot, la robótica, la domótica en general'
+7 'El avión' 8 'El teléfono móvil, el smartphone' 9 'Internet, wifi, rúter, fibra, conectividad'
+10 'Los trenes de alta velocidad' 11 'Los satélites espaciales, las naves, los viajes espaciales, la tecnología espacial'
+12 'Los medios de transporte en general' 13 'El patinete y la bicicleta eléctricos' 14 'El robot aspirador y el robot de cocina'
+15 'Los electrodomésticos: lavadora, secadora, frigorífico y lavaplatos' 16 'Los electrodomésticos para la climatización (aire acondicionado, calefacción)'
+17 'La tablet' 18 'Las videoconsolas y los videojuegos' 19 'Los microchips, la microtecnología'
+20 'Los relojes inteligentes' 21 'Las baterías' 22 'Los drones' 23 'La tecnología en general, las aplicaciones tecnológicas, la inteligencia artificial'
+24 'El software y la informática' 25 'La maquinaria y la tecnología médica, la biotecnología'
+26 'Las vacunas' 27 'El dinero, las tarjetas, los cajeros, los nuevos medios de pago' 28 'Las redes sociales'
+29 'Los medios de comunicación, las telecomunicaciones, las plataformas audiovisuales, de compras o entretenimiento'
+30 'Las energías renovables, los paneles solares, los generadores eólicos' 31 'La electrónica'
+32 'Otros electrodomésticos (freidora, microondas)' 33 'Otros objetos de uso doméstico (la mascarilla, la fregona, la rueda, etc.)'
+34 'El armamento, material bélico' 35 'El metaverso, la realidad virtual' 36 'Las energías no renovables y sus derivados'
+96 'Otro' 97 'Ninguno/ninguno más' 98 'N.S.' 99 'N.C.'
+/PROBLMUN1
+1 'El paro, la falta de trabajo, la precarización, la mecanización (sustitución por máquinas)'
+2 'Las guerras' 3 'El hambre, la falta de alimentos, la escasez, el desabastecimiento' 4 'La inmigración, los movimientos migratorios y las crisis migratorias'
+5 'El terrorismo' 6 'La delincuencia y la inseguridad ciudadana, la falta de protección de datos y el control tecnológico'
+7 'La pobreza, desigualdades y problemas sociales' 8 'La vivienda' 9 'La contaminación y los residuos (no nucleares)'
+10 'Las drogas' 11 'La destrucción de la naturaleza y de la biodiversidad, la deforestación'
+12 'El agua, las sequías, la desertificación' 13 'Las enfermedades víricas' 14 'La superpoblación'
+15 'La crisis económica' 16 'La violencia' 17 'La falta de solidaridad, el individualismo' 18 'El racismo'
+19 'La crisis de valores, el consumismo, la incomunicación, la intolerancia' 20 'La deshumanización'
+21 'La falta de recursos naturales, la escasez de materias primas' 22 'Los residuos nucleares'
+23 'La crisis política, los/as políticos/as' 24 'El armamento nuclear, las armas, la carrera armamentista'
+25 'La crisis religiosa' 26 'Los nacionalismos' 27 'La corrupción' 28 'Las carencias del Estado de bienestar (la sanidad, la educación, los servicios sociales)'
+29 'El funcionamiento de la democracia' 30 'Las epidemias, los problemas de salud, el cáncer'
+31 'El cambio climático, el calentamiento global' 32 'La energía (encarecimiento, escasez, dependencia)'
+33 'El envejecimiento de la población' 34 'Las tecnologías (dependencia, adaptación, mal uso)'
+35 'La globalización' 36 'La investigación' 37 'Las diferencias poblacionales, la despoblación'
+38 'Las tensiones internacionales, los conflictos económicos, el poder de China' 39 'Los problemas de información, la desinformación, las noticias falsas, los bulos'
+40 'Los desastres naturales' 41 'Los transportes' 42 'Las enfermedades mentales' 43 'La discriminación y las desigualdades de género y la violencia de género'
+44 'La falta de libertad, de derechos y libertades' 45 'El poder, luchas y abusos de poder'
+46 'La radicalización ideológica, extremismos políticos y regímenes totalitarios' 47 'Los problemas relativos a la juventud (oportunidades, educación)'
+48 'Las guerras tecnológicas, los ataques cibernéticos y biológicos' 49 'Las desigualdades entre países y continentes'
+96 'Otro' 97 'Ninguno/ninguno más' 98 'N.S.' 99 'N.C.'
+/PROBLMUN2
+1 'El paro, la falta de trabajo, la precarización, la mecanización (sustitución por máquinas)'
+2 'Las guerras' 3 'El hambre, la falta de alimentos, la escasez, el desabastecimiento' 4 'La inmigración, los movimientos migratorios y las crisis migratorias'
+5 'El terrorismo' 6 'La delincuencia y la inseguridad ciudadana, la falta de protección de datos y el control tecnológico'
+7 'La pobreza, desigualdades y problemas sociales' 8 'La vivienda' 9 'La contaminación y los residuos (no nucleares)'
+10 'Las drogas' 11 'La destrucción de la naturaleza y de la biodiversidad, la deforestación'
+12 'El agua, las sequías, la desertificación' 13 'Las enfermedades víricas' 14 'La superpoblación'
+15 'La crisis económica' 16 'La violencia' 17 'La falta de solidaridad, el individualismo' 18 'El racismo'
+19 'La crisis de valores, el consumismo, la incomunicación, la intolerancia' 20 'La deshumanización'
+21 'La falta de recursos naturales, la escasez de materias primas' 22 'Los residuos nucleares'
+23 'La crisis política, los/as políticos/as' 24 'El armamento nuclear, las armas, la carrera armamentista'
+25 'La crisis religiosa' 26 'Los nacionalismos' 27 'La corrupción' 28 'Las carencias del Estado de bienestar (la sanidad, la educación, los servicios sociales)'
+29 'El funcionamiento de la democracia' 30 'Las epidemias, los problemas de salud, el cáncer'
+31 'El cambio climático, el calentamiento global' 32 'La energía (encarecimiento, escasez, dependencia)'
+33 'El envejecimiento de la población' 34 'Las tecnologías (dependencia, adaptación, mal uso)'
+35 'La globalización' 36 'La investigación' 37 'Las diferencias poblacionales, la despoblación'
+38 'Las tensiones internacionales, los conflictos económicos, el poder de China' 39 'Los problemas de información, la desinformación, las noticias falsas, los bulos'
+40 'Los desastres naturales' 41 'Los transportes' 42 'Las enfermedades mentales' 43 'La discriminación y las desigualdades de género y la violencia de género'
+44 'La falta de libertad, de derechos y libertades' 45 'El poder, luchas y abusos de poder'
+46 'La radicalización ideológica, extremismos políticos y regímenes totalitarios' 47 'Los problemas relativos a la juventud (oportunidades, educación)'
+48 'Las guerras tecnológicas, los ataques cibernéticos y biológicos' 49 'Las desigualdades entre países y continentes'
+96 'Otro' 97 'Ninguno/ninguno más' 98 'N.S.' 99 'N.C.'
+/PROBLMUN3
+1 'El paro, la falta de trabajo, la precarización, la mecanización (sustitución por máquinas)'
+2 'Las guerras' 3 'El hambre, la falta de alimentos, la escasez, el desabastecimiento' 4 'La inmigración, los movimientos migratorios y las crisis migratorias'
+5 'El terrorismo' 6 'La delincuencia y la inseguridad ciudadana, la falta de protección de datos y el control tecnológico'
+7 'La pobreza, desigualdades y problemas sociales' 8 'La vivienda' 9 'La contaminación y los residuos (no nucleares)'
+10 'Las drogas' 11 'La destrucción de la naturaleza y de la biodiversidad, la deforestación'
+12 'El agua, las sequías, la desertificación' 13 'Las enfermedades víricas' 14 'La superpoblación'
+15 'La crisis económica' 16 'La violencia' 17 'La falta de solidaridad, el individualismo' 18 'El racismo'
+19 'La crisis de valores, el consumismo, la incomunicación, la intolerancia' 20 'La deshumanización'
+21 'La falta de recursos naturales, la escasez de materias primas' 22 'Los residuos nucleares'
+23 'La crisis política, los/as políticos/as' 24 'El armamento nuclear, las armas, la carrera armamentista'
+25 'La crisis religiosa' 26 'Los nacionalismos' 27 'La corrupción' 28 'Las carencias del Estado de bienestar (la sanidad, la educación, los servicios sociales)'
+29 'El funcionamiento de la democracia' 30 'Las epidemias, los problemas de salud, el cáncer'
+31 'El cambio climático, el calentamiento global' 32 'La energía (encarecimiento, escasez, dependencia)'
+33 'El envejecimiento de la población' 34 'Las tecnologías (dependencia, adaptación, mal uso)'
+35 'La globalización' 36 'La investigación' 37 'Las diferencias poblacionales, la despoblación'
+38 'Las tensiones internacionales, los conflictos económicos, el poder de China' 39 'Los problemas de información, la desinformación, las noticias falsas, los bulos'
+40 'Los desastres naturales' 41 'Los transportes' 42 'Las enfermedades mentales' 43 'La discriminación y las desigualdades de género y la violencia de género'
+44 'La falta de libertad, de derechos y libertades' 45 'El poder, luchas y abusos de poder'
+46 'La radicalización ideológica, extremismos políticos y regímenes totalitarios' 47 'Los problemas relativos a la juventud (oportunidades, educación)'
+48 'Las guerras tecnológicas, los ataques cibernéticos y biológicos' 49 'Las desigualdades entre países y continentes'
+96 'Otro' 97 'Ninguno/ninguno más' 98 'N.S.' 99 'N.C.'
+/IDEASPROS1_1
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS1_2
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS1_3
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS1_4
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS1_5
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS1_6
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS1_7
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS2_1
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS2_2
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS2_3
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS2_4
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS2_5
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS2_6
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS2_7
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS2_8
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS3_1
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS3_2
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS3_3
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS3_4
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS3_5
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS3_6
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS3_7
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS4_1
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS4_2
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS4_3
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS4_4
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS4_5
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS4_6
+1 'Más que ahora' 2 'Menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS5_1
+1 'Mayores/más que ahora' 2 'Menores/menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS5_2
+1 'Mayores/más que ahora' 2 'Menores/menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS5_3
+1 'Mayores/más que ahora' 2 'Menores/menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDEASPROS5_4
+1 'Mayores/más que ahora' 2 'Menores/menos que ahora' 3 'Igual que ahora' 8 'N.S.' 9 'N.C.'
+/IDENTIFIC1
+1 'Con las del mismo género' 2 'Con las de la misma edad y generación' 3 'Con las de la misma región o nacionalidad'
+4 'Con las de la misma clase social' 5 'Con las del mismo municipio' 6 'Con las que tienen sus mismas ideas políticas'
+7 'Con las que tienen sus mismas aficiones, gustos, modas' 8 'Con las que tienen sus mismas ideas religiosas'
+9 'Con las que tienen su misma profesión y trabajo' 11 'Con las que tiene alguna diferencia (sexo, edad, municipio,...)'
+12 'Con las que tienen los mismos principios, valores, ideas de vida' 13 'Con su entorno (amigos/as, familia,...)'
+14 'Con la buena gente, respetuosa, sencilla, dialogante' 15 'Con el mismo nivel cultural, intelectual'
+95 'Otras' 96 '(NO LEER) Con todos/as' 97 '(NO LEER) Con ningún grupo en concreto/ninguno más'
+98 'N.S.' 99 'N.C.'
+/IDENTIFIC2
+1 'Con las del mismo género' 2 'Con las de la misma edad y generación' 3 'Con las de la misma región o nacionalidad'
+4 'Con las de la misma clase social' 5 'Con las del mismo municipio' 6 'Con las que tienen sus mismas ideas políticas'
+7 'Con las que tienen sus mismas aficiones, gustos, modas' 8 'Con las que tienen sus mismas ideas religiosas'
+9 'Con las que tienen su misma profesión y trabajo' 11 'Con las que tiene alguna diferencia (sexo, edad, municipio,...)'
+12 'Con las que tienen los mismos principios, valores, ideas de vida' 13 'Con su entorno (amigos/as, familia,...)'
+14 'Con la buena gente, respetuosa, sencilla, dialogante' 15 'Con el mismo nivel cultural, intelectual'
+95 'Otras' 96 '(NO LEER) Con todos/as' 97 '(NO LEER) Con ningún grupo en concreto/ninguno más'
+98 'N.S.' 99 'N.C.'
+/ESCIDEOL
+1 '1 Izquierda' 10 '10 Derecha' 98 'N.S.' 99 'N.C.'
+/PARTICIPACIONG
+1 'Votó' 2 'No votó' 3 'No tenía edad para votar' 4 'No tenía derecho a voto' 8 'No recuerda'
+9 'N.C.'
+/RECUERDO
+2 'PP' 1 'PSOE' 3 'VOX' 21 'Sumar' 901 'ERC' 902 'Junts' 1602 'EH Bildu' 1601 'EAJ-PNV' 1201 'BNG'
+503 'CCa' 1501 'UPN' 6 'PACMA' 8995 'Otro partido' 8996 'En blanco' 9977 'Nulo' 9995 'No tenía edad'
+9997 'No votó' 9996 'No tenía derecho a voto' 9998 'N.R.' 9999 'N.C.'
+/ESCUELA
+1 'No, es analfabeto/a' 2 'No, pero sabe leer y escribir' 3 'Sí, ha ido a la escuela' 9 'N.C.'
+/NIVELESTENTREV
+1 'Menos de 5 años de escolarización ' 2 'Educación Primaria (Educación Primaria de LOGSE, 5º curso de EGB, enseñanza primaria antigua) '
+3 'F.P. Básica (FPB), cualificación profesional grado inicial (FP grado inicial). PCPI (Programas de Cualificación Profesio'+'nal Inicial, que no precisan de titulación académica de la primera etapa de secundaria para su realización). Programas d'+'e garantía social '
+4 'Educación secundaria (ESO, EGB. Graduado Escolar. Certificado de Escolaridad, Bachillerato Elemental) '
+5 'FP de Grado Medio (ciclo/módulo formativo de FP (grado medio), de Artes Plásticas y Diseño, Música y Danza, enseñanzas d'+'eportivas, FP I, Bachiller Laboral Elemental. Oficialía Industrial; Bachillerato Comercial) '
+6 'Bachillerato (Bachillerato LOGSE, BUP, Bachillerato Superior (6º), Bachillerato Universitario (7º), incluidos COU y PREU'+') '
+7 'FP de Grado Superior (ciclo/módulo formativo de FP (grado superior) de Artes Plásticas, Diseño, Música y Danza, Deporte,'+' FP II, Bachillerato Laboral Superior, Maestría industrial, perito/a mercantil; Secretariado de 2º grado; Grado Medio co'+'nservatorio) '
+8 'Arquitectura/Ingeniería Técnica (aparejador/a; peritos/as) ' 9 'Diplomatura (ATENCIÓN: sólo diplomaturas oficiales, no codificar aquí los tres primeros años de una licenciatura o grado'+' con mayor duración) '
+10 'Grado (estudios de grado, enseñanzas artísticas equivalentes (desde 2006)) ' 11 'Licenciatura (titulaciones con equivalencia oficial: 2º ciclo INEF; Danza y Arte Dramático (desde 1992); Grado Superior '+'de Música) '
+12 'Arquitectura/Ingeniería' 13 'Máster oficial universitario (especialidades médicas o equivalente) '
+14 'Doctorado' 15 'Títulos propios de posgrado (máster no oficial, etc.) ' 16 'Otros estudios '
+98 'N.S./No recuerda ' 99 'N.C.' 0 'N.P.'
+/RELIGION
+1 'Católico/a practicante' 2 'Católico/a no practicante' 3 'Creyente de otra religión' 4 'Agnóstico/a (no niegan la existencia de Dios pero tampoco la descartan)'
+5 'Indiferente, no creyente' 6 'Ateo/a (niegan la existencia de Dios)' 9 'N.C.'
+/SITLAB
+1 'Trabaja' 2 'Jubilado/a o pensionista (anteriormente ha trabajado) ' 3 'Pensionista (anteriormente no ha trabajado) '
+4 'En paro y ha trabajado antes ' 5 'En paro y busca su primer empleo ' 6 'Estudiante ' 7 'Trabajo doméstico no remunerado '
+8 'Otra situación' 9 'N.C.'
+/RELALAB
+1 'Asalariado/a por cuenta ajena' 2 'Empresario/a o profesional con asalariados/as' 3 'Profesional o trabajador/a autónomo/a (sin asalariados/as)'
+4 'Ayuda familiar (sin remuneración reglamentada en la empresa o negocio de un/a familiar)'
+5 'Miembro de una cooperativa' 6 'Otra situación' 9 'N.C.' 0 'N.P.'
+/CNO11
+1 'Directores/as y gerentes' 2 'Profesionales científicos e intelectuales' 3 'Técnicos/as y profesionales de nivel medio'
+4 'Personal de apoyo administrativo' 5 'Trabajadores/as de los servicios y vendedores/as de comercios y mercados'
+6 'Agricultores/as y trabajadores/as cualificados/as agropecuarios, forestales y pesqueros/as'
+7 'Oficiales/as, operarios/as, artesanos/as y trabajadores/as de artes mecánicas y de otros oficios'
+8 'Operadores/as de instalaciones y máquinas y ensambladores/as' 9 'Ocupaciones elementales'
+10 'Ocupaciones militares y cuerpos policiales' 11 'Otra/o' 99 'N.C.' 0 'N.P.'
+/OPINION
+1 'Mejor' 2 'Peor' 3 'Igual' 8 'N.S., duda' 9 'N.C.'
+/CLASESOCIAL
+1 'Clase alta ' 2 'Clase media-alta ' 3 'Clase media-media ' 4 'Clase media-baja ' 5 'Clase trabajadora/obrera '
+12 'Clase baja ' 6 'Clase pobre ' 7 'Infraclase' 8 'Proletariado' 9 'A los/as de abajo ' 10 'Excluidos/as'
+11 'A la gente común ' 13 'Clase media' 96 'Otras' 97 'No cree en las clases ' 98 'No sabe, duda '
+99 'N.C.'
+/CLASESUB
+1 'Clase alta y media alta' 2 'Clase media-media' 3 'Clase media-baja' 4 'Clase trabajadora/obrera/proletariado'
+5 'Clase baja/pobre' 6 'Otras' 8 'N.S.' 9 'N.C.'
+/IA_I501
+0 'No procede'
+/IA_I502
+0 'No procede'
+/IA_I503
+0 'No procede'
+/IA_I504
+0 'No procede'
+/IA_I505
+0 'No procede'
+/IA_I506
+0 'No procede'
+/IA_I507
+0 'No procede'
+/IA_I508
+0 'No procede'
+/IA_I509
+0 'No procede'
+/IA_I510
+0 'No procede'
+/IA_I511
+0 'No procede'
+/IA_I512
+0 'No procede'
+/IA_I513
+0 'No procede'
+/IA_I514
+0 'No procede'
+/IA_I515
+0 'No procede'
+/IA_I516
+0 'No procede'
+/IA_I517
+0 'No procede'
+/IA_I518
+0 'No procede'
+/IA_I519
+0 'No procede'
+/IA_I520
+0 'No procede'
+/IA_I521
+0 'No procede'
+/IA_I522
+0 'No procede'
+/IA_I523
+0 'No procede'
+/IA_I524
+0 'No procede'
+/IA_I525
+0 'No procede'
+/IA_I526
+0 'No procede'
+/IA_I528
+0 'No procede'
+/IA_I529
+0 'No procede'
+/IA_I530
+0 'No procede'
+/IA_I531
+0 'No procede'
+/IA_I532
+0 'No procede'
+/IA_I533
+0 'No procede'
+/IA_I534
+0 'No procede'
+/IA_I535
+0 'No procede'
+/IA_I536
+0 'No procede'
+/IA_I537
+0 'No procede'
+/IA_I538
+0 'No procede'
+/IA_I539
+0 'No procede'
+/IA_I540
+0 'No procede'
+/IA_I541
+0 'No procede'
+/IA_I542
+0 'No procede'
+/IA_I543
+0 'No procede'
+/IA_OBS1
+0 'No procede'
+/IA_OBS2
+0 'No procede'
+/IA_E1_DIA
+99 'N.C.'
+/IA_E1_MES
+1 'Enero  ' 2 'Febrero  ' 3 'Marzo  ' 4 'Abril  ' 5 'Mayo  ' 6 'Junio  ' 7 'Julio  ' 8 'Agosto  '
+9 'Septiembre  ' 10 'Octubre  ' 11 'Noviembre    ' 12 'Diciembre  ' 99 'N.C.'
+/IA_E1_ANYO
+23 '2023'
+/IA_E2
+1 'Lunes' 2 'Martes' 3 'Miércoles' 4 'Jueves' 5 'Viernes' 6 'Sábado' 7 'Domingo' 9 'N.C.'
+/IA_E3
+/IA_E4
+1 'Mañana (9-12)' 2 'Mediodía (12-16)' 3 'Tarde (16-20)' 4 'Noche (20-22)' 5 'Otra (22-9)'
+/IA_VALIDA
+0 'No' 1 'Sí'
+/IA_APLAZADA
+0 'No' 1 'Sí'
+/IA_MODIFICADA
+0 'No' 1 'Sí'
+/IA_SUPERVISADA
+0 'No' 1 'Sí'
+/IA_C2
+1 'Entrevista no supervisada' 2 'Supervisión telefónica' 3 'Supervisión personal' 4 'Supervisión telefónica y personal'
+5 'Supervisión directa' 6 'Supervisión de audio (monitorización)'
+/IA_C2A
+1 'Entrevista correcta' 2 'Entrevista incorrecta' 3 'No se ha establecido contacto' 0 'N.P.'
+/IA_C2B_1
+1 'Dirección inexistente (no existe número en la calle, piso, etc...)' 0 'N.P.' -99 'N.P.'
+/IA_C2B_2
+1 'Dirección ilocalizable (faltan datos: número, piso, letra, etc...)' 0 'N.P.' -99 'N.P.'
+/IA_C2B_3
+1 'No coinciden datos personales y no ha sido realizada en la dirección que se hace constar'
+0 'N.P.' -99 'N.P.'
+/IA_C2B_4
+1 'Negativa que ofrece dudas. Coinciden datos personales pero niegan haber realizado la entrevista'
+0 'N.P.' -99 'N.P.'
+/IA_C2B_5
+1 'Realizada a una persona, recogiendo los datos de otra' 0 'N.P.' -99 'N.P.'
+/IA_C2B_6
+1 'Realizada cambiando género del entrevistado' 0 'N.P.' -99 'N.P.'
+/IA_C2B_7
+1 'Cambio de edad por otra de un tramo contiguo' 0 'N.P.' -99 'N.P.'
+/IA_C2B_8
+1 'Cambio de edad por otra de un tramo no contiguo' 0 'N.P.' -99 'N.P.'
+/IA_C2B_9
+1 'Realizada fuera de la vivienda pero vive en la sección electoral' 0 'N.P.' -99 'N.P.'
+/IA_C2B_10
+1 'Realizada fuera de la vivienda, y no vive en la sección electoral' 0 'N.P.' -99 'N.P.'
+/IA_C2B_11
+1 'Realizada en dirección que no corresponde a la sección electoral' 0 'N.P.' -99 'N.P.'
+/IA_C2B_12
+1 'Realizada, pero no respeta las normas de ruta' 0 'N.P.' -99 'N.P.'
+/IA_C2B_13
+1 'Se detecta que no ha hecho todas las preguntas' 0 'N.P.' -99 'N.P.'
+/IA_C2B_14
+1 'Negativa que ofrece dudas: no coincide la dirección ni datos personales. Posibilidad de error en el teléfono'
+0 'N.P.' -99 'N.P.'
+/IA_C2B_15
+1 'No hay grabación' 0 'N.P.' -99 'N.P.'
+/IA_C2B_16
+1 'Realizada en otro idioma' 0 'N.P.' -99 'N.P.'
+/IA_C2B_17
+1 'Realizada en un establecimiento o negocio, no es un domicilio' 0 'N.P.' -99 'N.P.'
+/IA_C2B_18
+1 'Valores de cuota anotados incorrectamente, distintos de sexo y edad (provincia/municipio/situación laboral)'
+0 'N.P.' -99 'N.P.'
+/IA_C2B_19
+1 'No se lee el protocolo de inicio o fin de la encuesta' 0 'N.P.' -99 'N.P.'
+/IA_C2B_20
+1 'Entrevista interrumpida y autocompletada' 0 'N.P.' -99 'N.P.'
+/IA_C2B_21
+1 'No se leen  literalmente las preguntas y/o las opciones de respuesta' 0 'N.P.' -99 'N.P.'
+/IA_C2B_22
+1 'Induce las respuestas' 0 'N.P.' -99 'N.P.'
+/IA_C2B_23
+1 'No se recogen fielmente las respuestas espontáneas' 0 'N.P.' -99 'N.P.'
+/IA_C2B_24
+1 'Lee las categorías de respuesta cuando ésta es espontánea' 0 'N.P.' -99 'N.P.'
+/IA_C2B_25
+1 'Codificación incorrecta por parte del/a entrevistador/a (Ej. estudios, problemas, preguntas precodificadas…)'
+0 'N.P.' -99 'N.P.'
+/IA_C3
+1 'Entrevista válida' 2 'Entrevista anulada' 0 'N.P.'
+/IA_C4
+0 'Anonimizado'
+/RECUVOTOGR
+2 'PP' 1 'PSOE' 3 'VOX' 21 'Sumar' 901 'ERC' 902 'Junts' 1602 'EH Bildu' 1601 'EAJ-PNV' 1201 'BNG'
+503 'CCa' 1501 'UPN' 6 'PACMA' 8995 'Otro partido' 8996 'En blanco' 9977 'Voto nulo' 9998 'N.R.'
+9999 'N.C.' 0 'N.P.'
+/RECUVOTOG
+2 'PP' 1 'PSOE' 3 'VOX' 21 'Sumar' 901 'ERC' 902 'Junts' 1602 'EH Bildu' 1601 'EAJ-PNV' 1201 'BNG'
+503 'CCa' 1501 'UPN' 6 'PACMA' 8995 'Otro partido' 8996 'En blanco' 9977 'Voto nulo' 9998 'N.R.'
+9999 'N.C.' 0 'N.P.'
+/ESTUDIOS
+1 'Sin estudios' 2 'Primaria' 3 'Secundaria 1ª etapa' 4 'Secundaria 2ª etapa' 5 'F.P.' 6 'Superiores'
+7 'Otros' 9 'N.C.'
+/CNO11R
+1 'Directores/as y gerentes' 2 'Profesionales, científicos/as e intelectuales' 3 'Técnicos/as y profesionales de nivel medio'
+4 'Personal de apoyo administrativo' 5 'Trabajadores/as de los servicios y vendedores/as de comercios y mercados'
+6 'Agricultores/as y trabajadores/as agropecuarios/as, forestales y pesqueros/as' 7 'Oficiales/as, operarios/as y artesanos/as'
+8 'Operadores/as de instalaciones y máquinas y ensambladores/as' 9 'Ocupaciones elementales'
+10 'Ocupaciones militares y cuerpos policiales' 11 'Otra ocupación' 12 'Jubilado/a o pensionista (anteriormente ha trabajado)'
+13 'Estudiante' 14 'Trabajo doméstico no remunerado' 15 'Otra situación inactiva' 16 'Parados/as'
+99 'N.C.'
+/PESO
+.
+EXECUTE.
+
+MISSING VALUES
+ INESTADO2 (0) FUTUR2 (0) NIVELESTENTREV (0) RELALAB (0) CNO11 (0) RECUVOTOGR (0) RECUVOTOG (0)
+.
+EXECUTE.
+WEIGHT BY PESO.
+FREQUENCIES VARIABLES ALL.

@@ -1,0 +1,1156 @@
+---
+title: "Descriptive Analysis"
+author: "Eric Hausken"
+editor: visual
+editor_options: 
+  chunk_output_type: inline
+  toc: true
+format: 
+  pdf:
+    toc: true
+    toc-depth: 3
+    embed-resources: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, fig.width = 11, fig.height = 8)
+library(tidyverse)
+
+# source("./CollectingCovariateData.R")
+load("data.RData")
+```
+
+# Red Eléctrica electricity generation
+
+I have already pulled the amount of wind energy generated as a percentage of all electricity for each autonomous community of Spain since 2014. You can see the summary below:
+
+```{r}
+red_data <- read_csv("red_data.csv")
+wind_data <- red_data |> 
+  filter(name == "Eólica")
+
+summary(factor(red_data$name) )
+```
+
+```{r}
+library(patchwork)
+
+plta <- wind_data |> 
+  ggplot(aes(x = percentage, y =ccaa, color = date)) +
+  geom_point(size =4, alpha = .2) +
+  geom_boxplot(alpha = .2) +
+  scale_x_continuous(labels = scales::label_percent(), 
+                     limits = c(0,1),
+  ) +
+ scale_color_continuous(type = "viridis") + 
+  theme_bw() + 
+  labs(
+    x = "% of total electricity", 
+    y = NULL, 
+    subtitle = "Linear scale", 
+    title = "", 
+    #caption = "Data: Red Eléctrica" 
+  )
+
+pltb <- wind_data |> 
+  ggplot(aes(x = percentage, y =ccaa, color = date)) +
+  geom_point(size =4, alpha = .2) +
+  geom_boxplot(alpha = .2) +
+  scale_x_continuous(labels = scales::label_percent(), 
+                     limits = c(0,1),
+                     trans = "sqrt"
+  ) +
+ scale_color_continuous(type = "viridis") + 
+  theme_bw() + 
+  labs(
+    x = "% of total electricity", 
+    y = NULL, 
+    subtitle = "Square-root scale", 
+    title = "", 
+    #caption = "Data: Red Eléctrica" 
+  )
+
+plta + pltb + plot_layout(guides = "collect") +
+  plot_annotation(subtitle = "Wind energy generated per CCAA as a percentage of total energy generated, 2014-23, Monthly",
+                  title = "Most CCAA show normal distribution on linear and square-root scale",
+                  caption = "Data: Red Eléctrica")
+```
+
+## ANOVA tests
+
+```{r}
+aov1 <- aov(data = wind_data, percentage ~ ccaa + factor(date) )
+summary(aov1)
+
+aov2 <- aov(data = wind_data, percentage ~ ccaa + date )
+summary(aov2)
+
+aov3 <- aov(data = wind_data, percentage ~ ccaa + lubridate::year(date) )
+summary(aov3)
+
+aov4 <- aov(data = wind_data, percentage ~ ccaa + factor(lubridate::year(date)) )
+summary(aov4)
+
+aov5 <- aov(data = wind_data, percentage ~ ccaa + 
+              factor(lubridate::year(date)) + factor(lubridate::month(date)) )
+summary(aov5)
+
+
+anova(aov1, aov2, aov3, aov4, aov5) 
+```
+
+The best model in terms of lowest *Residual Sum of Sq* is Model5, which includes two factor variables for the date, split up into `year` and `month`. That way we can get seasonal affects and year-over-year changes.
+
+Let's plot how it looks for each monthly average:
+
+```{r}
+wind_data |> 
+  mutate(month = lubridate::month(date),
+         year_ccaa = paste(lubridate::year(date), ccaa)
+         ) |> 
+  ggplot(aes(x = factor(month), y = percentage, group = year_ccaa)) +
+  geom_line() +
+  geom_hline(yintercept = 0) +
+  theme_minimal() +
+  facet_wrap(~ccaa, scales = "free_y")
+```
+
+This plot above is very messy, but it it clear that many comunidades have a dip in `percentage` during the summer months. There are several exceptions, including Canarias, Galicia and Navarra.
+
+But that is the percentage of the total electricity generated, as opposed to the absolute value. Let's see if there is a change during the summer:
+
+```{r}
+wind_data |> 
+  mutate(month = lubridate::month(date),
+         year_ccaa = paste(lubridate::year(date), ccaa)
+         ) |> 
+  ggplot(aes(x = factor(month), y = value, group = year_ccaa)) +
+  geom_line() +
+  geom_hline(yintercept = 0) +
+  theme_minimal() +
+  facet_wrap(~ccaa, scales = "free_y")
+```
+
+Interesting! We see a dip in the summer also for the actual generated value. That would suggest that the dip in percentage is not due to other sources increasing during the summer. For example, we can assume that solar power increases during the summer because of more sunshine hours. So that leaves us with a question, *Why do summer months generate less wind energy than do winter months?*
+
+### Distribution for each month
+
+```{r}
+wind_data |> 
+  mutate(month = lubridate::month(date),
+         year_ccaa = paste(lubridate::year(date), ccaa)
+  ) |> 
+  ggplot(aes(x = factor(month), y = percentage)) +
+  geom_boxplot(color = "red2", ) +
+  theme_minimal() +
+  labs( title = "Summer months tend to have lower dependence on wind",
+    subtitle = "Wind energy in Spain's comunidades, 2014-23",
+    caption = "Data: Red Eléctrica",
+    x = "Month",
+    y = "% of total electricity generated"
+  ) +
+  scale_y_continuous(labels = scales::label_percent()) 
+```
+
+Now this plot is clearly shows that the summer months have a lower median percentage than the winter months. There appears to be a seasonal affect on wind energy generation, likely due to climate.
+
+### Distributions of `percentage`
+
+```{r }
+# distribution of percentage of wind energy 
+hist(wind_data$percentage)
+hist(sqrt(wind_data$percentage))
+
+# but is it a bell curve for each CCAA? 
+wind_data |> 
+  ggplot(aes(percentage)) + 
+  geom_histogram(fill = "red2", color = "red4") +
+  theme_bw() +
+  facet_wrap(~ccaa, scales = "free_x") + 
+  scale_x_continuous(labels = scales::label_percent())
+```
+
+After splitting up the data into 16 facets, one for each comunidad, we can see that the distribution of `percentage` is less skewed than when compiled together. There is still a positive skew for **Murcia** and **Valencia**, but most comunidades do not have a clear distribution.
+
+## Total generated
+
+Now let's do the same thing for total generation and see the differences:
+
+```{r}
+library(patchwork)
+plta <- red_data |> 
+  filter(name == "Generación total") |> 
+  ggplot(aes(x = value, y =ccaa, color = date)) +
+  geom_point(size =4, alpha = .2) +
+  geom_boxplot(alpha = .2) +
+  scale_color_continuous(type = "viridis", trans = "date") +
+  # scale_x_log10() +
+  theme_bw() +
+  labs(
+    x = "MWh",
+    y = NULL,
+    subtitle= NULL,
+    title = "Linear scale",
+  )
+
+pltb <- red_data |> 
+  filter(name == "Generación total") |> 
+  ggplot(aes(x = value, y =ccaa, color = date)) +
+  geom_point(size =4, alpha = .2) +
+  geom_boxplot(alpha = .2) +
+  scale_color_continuous(type = "viridis", trans = "date") +
+  scale_x_log10() +
+  theme_bw() +
+  labs(
+    x = "MWh",
+    y = NULL,
+    subtitle = NULL,
+    title = "Log scale",
+  )
+
+plta + pltb +plot_layout(guides = "collect") +
+  plot_annotation(title = "Total energy generated per CCAA, 2014-23, Monthly", 
+                  caption = "Data: Red Eléctrica")
+```
+
+### ANOVA tests for Total
+
+Null hypothesis -\> Do all the `CCAA` have the same mean monthly wind generation?
+
+```{r anova-total}
+aov1 <- aov(data = red_data[red_data$name == "Generación total",], value ~ ccaa + factor(date) )
+summary(aov1)
+
+aov2 <- aov(data = red_data[red_data$name == "Generación total",], value ~ ccaa + date )
+summary(aov2)
+
+aov3 <- aov(data = red_data[red_data$name == "Generación total",], value ~ ccaa + lubridate::year(date) )
+summary(aov3)
+
+aov4 <- aov(data = red_data[red_data$name == "Generación total",], value ~ ccaa + factor(lubridate::year(date)) )
+summary(aov4)
+
+aov5 <- aov(data = red_data[red_data$name == "Generación total",], value ~ ccaa + 
+              factor(lubridate::year(date)) + factor(lubridate::month(date)) )
+summary(aov5)
+
+
+anova(aov1, aov2, aov3, aov4, aov5)
+```
+
+Once again, different `ccaa` clearly have different mean total generation. In contrast with the ANOVA tests on percentage of wind energy, `date` does not have a strong affect on the outcome. One possible explanation is that some comunidades decreased generation over the last 10 years, while other increased.
+
+```{r, fig.width=11}
+red_data |> 
+  filter(name == "Generación total") |> 
+  ggplot(aes(x = as.Date(datetime), y = value)) +
+  geom_line() +
+  geom_smooth(color = "red3") +
+  facet_wrap(~ccaa, scales = "free_y") +
+  theme_bw() +
+  scale_y_continuous(
+    labels = scales::label_number(scale_cut = scales::cut_short_scale())
+  ) +
+  scale_x_date(date_labels = "'%y", minor_breaks = NULL) +
+  labs(
+    y = "MWh",
+    x = NULL,
+    subtitle = "Total energy generated per CCAA, 2014-23, Monthly",
+    title = "No clear pattern for all CCAA, some increase, some decreasing",
+    caption = "Data: Red Eléctrica"
+  )
+```
+
+# Covariate data
+
+```{r}
+covariates.raw <- read_csv("./covariate_data.csv")
+
+glimpse(covariates.raw)
+```
+
+## 1. Electricity prices index
+
+```{r , fig.cap="Timelapse chart"}
+spain_electricity_index |> 
+  ggplot(aes(x = DATE, y = price.index)) +
+  geom_point(alpha = 0.5) +
+  geom_line() +
+  theme_bw() + 
+  geom_smooth(se = T, color = "peru", span = 0.25, method = "loess" ) +
+  labs(
+    y = "Price index (100 = JAN'15)",
+    x = NULL
+  ) +
+  theme(
+  )
+```
+
+Looking at the histograms below, it appears that the distribution is bi-modal. There are a few outliers that occur between 2021 to 2023 when prices spiked enormously. Other than those outliers, the timelapse chart above shows two phases to electricity prices in Spain. First, from 1996 to 2010 the prices varied very little from month to month. Prices started gradually increasing in 2001 until 2013. After 2013, prices varied much more month to month, but overall prices stayed about the same price. After the spike of 2021-23, prices returned to the average from 2013-2020. The two phases I see are between 1996-2013 and 2013-today.
+
+```{r fig.width=11}
+par(mfrow = c(1,3))
+hist(spain_electricity_index$price.index, breaks = 20, xlab = "price index")
+
+phase_1 <- spain_electricity_index$price.index[spain_electricity_index$DATE < as.Date("2013-01-01")]
+hist(phase_1, breaks = 10, main = "Jan'96-Dec'12", xlab = "price index")
+
+phase_2 <- spain_electricity_index$price.index[spain_electricity_index$DATE >= as.Date("2013-01-01") & spain_electricity_index$DATE < as.Date("2021-09-01")]
+hist(phase_2, breaks = 10, main = "Jan'13-Sep'21", xlab = "price index")
+```
+
+### Generating energy per CCAA and Spanish electricity prices
+
+```{r , fig.width=11, fig.height=8}
+red_data |> 
+  mutate(month = lubridate::month(date),
+         year = lubridate::year(date)) |> 
+  left_join(spain_electricity_index, by = c("year", "month")) |> 
+  filter(name == "Generación total") |> 
+  ggplot(aes(date, y = value, color = price.index)) +
+ # geom_point() +
+  geom_line() +
+  scale_y_continuous(trans = "identity", 
+                     labels = scales::label_number( scale_cut = scales::cut_short_scale())
+                     ) +
+  scale_x_continuous(
+    trans = "date", n.breaks = 4
+    ) +
+  scale_color_gradient(
+    low = "green4", high = "red"
+    ) +
+  facet_wrap(~ccaa, scales = "free_y") +
+  theme_bw() +
+  labs(
+    x = "",
+    y = "Energy generated - MWh",
+    subtitle = "Relationship between Spanish electricy prices and energy generation, 2014-2023, Monthly", 
+   title = "Price spike of 2021-23 did not disrupt energy generation trends in most regions"
+  )
+```
+
+From the chart above, you can see that in
+
+## 2. Climate data
+
+The climate data shows the average precipitation and temperature for each month for each comunidad. The values are taken from averages between 1981-2010. There is also a value for the average annual precipatation and temperature for each CCAA.
+
+```{r}
+clima <- climate_data |> 
+  pivot_wider(names_from = parametro, values_from = value)
+glimpse(clima)
+```
+
+Let's see the distributions of average precipitation for each CCAA, split up by each month in one small multiple. We can clearly see that July has the smallest variance *and* smallest mean precipitation across regions. All of Spain has very small--if any-- amounts of rain in July. The largest variance and mean appears to be in the winter months. I will test this out below.
+
+```{r}
+clima |> 
+  filter(mes!= "anual") |> 
+  ggplot(aes(prec)) +
+  geom_vline(xintercept = 0, color = "black") +
+  geom_histogram(fill = "red4") +
+  facet_wrap(~mes_num, scales = "fixed") +
+  scale_x_continuous(
+    labels = scales::label_number(scale = 0.001) # scale to 'meters' instead of 'mm'
+  ) +
+  labs(
+    y = "number of CCAA",
+    x = "precipitation in m",
+    subtitle = "Facets by month (1 = January)",
+    title = "Most CCAA have little or no rain in July "
+  ) +
+  theme_bw()
+```
+
+```{r fig.width= 11, fig.height=8}
+mes_clima <- clima |> filter(mes != "anual") |> 
+  mutate(month = factor(mes_num))
+  
+aov <- aov(data = mes_clima, prec ~ mes + CCAAnombre)
+summary(aov)
+
+z <- 1.96
+pltA <- mes_clima |> 
+  group_by(mes_num) |> 
+  summarise(
+    sd_prec = sd(prec),
+    mean_prec = mean(prec)
+  ) |> 
+  ggplot(aes(x = mean_prec, y = as.factor(mes_num) , 
+             xmin = mean_prec - z*sd_prec,
+             xmax = mean_prec + z*sd_prec)) +
+  geom_vline(xintercept = 0, color = "black") +
+  geom_linerange(color = "red2")+
+  geom_point(color = "red4")+
+  scale_x_continuous(
+   limits = c(0, NA), 
+   oob = scales::squish
+  ) +
+  labs(
+    subtitle = "95% confidence interval for average precipitation across CCAA"
+  )
+           
+pltB <- mes_clima |> 
+  ggplot(aes(x = prec, y = as.factor(mes_num)) ) +
+#   geom_vline(xintercept = 0, color = "black") +
+  geom_boxplot(color = "red4")+
+  geom_jitter(color = "red2", alpha = 0.3)+
+  scale_x_continuous(
+   limits = c(0, NA), 
+   oob = scales::squish
+  ) +
+  labs(
+    subtitle = "Boxplot for average precipitation across CCAA"
+  )
+
+library(patchwork)
+pltA + pltB
+```
+
+The chart with 95% confidence intervals shows precipitation has a high amount of variance all year except in July. Although the *mean* count of precipitation changes a lot by season (summer months have fewer rain), there is a lot of variation across region. Meanwhile, the boxplot chart shows that the distribution is skewed right for the rainier winter months due to some outliers with high amounts of precipitation. Looking at the boxplots, you can see that the variation is probably not as wide as the 95% confidence interval based on *mean*.
+
+For example, October (`mes` = 10) has a *mean* of 773 and *median* a bit lower at 700 mm. The middle 50%, shown in the "box" of the boxplot, is between 590 ad 859, which appears to be symmetrical around the median. The "whiskers" also appear symmetrical and equidistant from the median, reaching to the minimum of 271. However, there are two major outliers that skew the distribution. Those two outliers are **Asturias** and **Galicia**. Also note that the middle two quartiles are relatively small compared to the other months, except for July.
+
+```{r}
+print(mes_clima |> 
+  filter(mes_num == 10 ) |> 
+  summary() 
+)
+
+print(mes_clima |> 
+  filter(mes_num == 10 & 
+           prec > 1250 ) # get the outliers greater than the whiskers 
+)
+```
+
+## 3. Survey responses
+
+The survey data is broken up into two questions.
+
+`p_energy` is the proportion of responsdents, for each CCAA, that included an issue related to the climate, environment or energy in the question about what are the most critical issues this decade. These are the topics included from the CIS survey:
+
+1.  "La destrucción de la naturaleza y de la biodiversidad, la deforestación"
+2.  "La falta de recursos naturales, la escasez, de materias primas"
+3.  "El cambio climático. el calentamionto global"
+4.  "La energía (encarecimento, escasez, dependencia)"
+
+`mas`, `menos`, `igual`, and `ns` are the percentage of respondents who answered with that response in the question about how bad the environment in Spain will worsen.
+
+```{r}
+survey <- covariates.raw |> 
+  distinct(CCAAnombre, response_p, response_sd, total.y, mas, menos, igual, ns)
+
+glimpse(survey)
+```
+
+### First question: most critical issues
+
+```{r ci-chart-qi, fig.width=11, fig.height=8, fig.cap="Figure A"}
+z = 1.96
+survey |>
+  ggplot(aes(y = reorder(CCAAnombre, response_p), x = response_p,
+             xmax = z * response_sd + response_p, 
+             xmin = response_p - z * response_sd)) +
+  geom_linerange(color = "red4") +
+  geom_point(color = "red2") +
+  labs( title = "",
+    subtitle = "95% C.I. for mean proportion of respondents that said energy or climate change are major issue in the next decade",
+    x = NULL,
+    y = NULL
+  ) +
+  scale_x_continuous(
+    labels = scales::label_percent(),
+    limits = c(0,1),
+    oob = scales::squish
+  )  +
+  theme_bw() +
+  theme(
+    axis.text.y = element_text(size = 12, face = "bold")
+  ) +
+  annotate(
+    "text", x = 0.7, y = 1.2, label = 
+      expression(paste(bold("Ceuta"), " and ", bold("Melila"), " have very low sample size."))
+     )
+
+```
+
+We can say, at a 95% confidence level, that **Extremadura** likely has the lowest proportion of respondents that think energy and natural resources are the most important issues today. Although **Melilla** has the smallest proportion, there were only 6 respondents from that CCAA in this survey. **Ceuta** also had a very small sample size of only 7 respondents. The top three CCAA with the highest proportion were **País Vaso**, **Cataluña** and **Madrid**.
+
+The chart suggests that Spanish CCAA are different in a statistically significant way. The confidence interval shows the estimated true proportion for each region with 95% likelihood and they do not all overlap. Interestingly, **Andalucía** is significantly different from the top three.
+
+### Second question: environmental destruction
+
+The sample sizes are basically the same for this question.
+
+```{r ci-chart-q2, fig.width=11, fig.height=8, fig.cap="Figure B"}
+z <-  1.96
+survey |> 
+  select(CCAAnombre, mas, menos, igual, total.y) |> 
+  mutate(moe_mas = z * sqrt(mas * (1 - mas) / total.y)) |> # calculate margin of error with 95% conf. level.
+    ggplot(aes(y = reorder(CCAAnombre, mas), x = mas,
+             xmax = z * moe_mas + mas, 
+             xmin = mas - z * moe_mas)) +
+  geom_linerange(color = "red4") +
+  geom_point(color = "red2") +
+  labs( title = "All confidence intervals overlap",
+    subtitle = "95% C.I. for mean proportion of respondents that said the environmental destruction will worsen in the next decade",
+    x = NULL,
+    y = NULL
+  ) +
+  scale_x_continuous(
+    labels = scales::label_percent(),
+    limits = c(0,1),
+    oob = scales::squish
+  )  +
+  theme_bw() +
+  theme(
+    axis.text.y = element_text(size = 12, face = "bold")
+  ) +
+  annotate(
+    "text", x = 0.2, y = 18.5, label = 
+      expression(paste(bold("Ceuta"), " and ", bold("Melila"), " have very low sample size."))
+     )
+```
+
+Unlike the first question about the most important issues, the responses to this question appear to have similar results across Spanish comunidades. You can see that **Madrid** had one of the lowest proportions, with 50% saying that environmental degradation will get worse. Its confidence interval overlaps with every other CCAA's interval.
+
+> Define margin of error: If the survey was replicated many times with similar respondents, 95% of those surveys' confidence intervals would include the true population mean. In other words, out of 20 surveys done in the same way, 19 of them would have a confidence interval that includes the true population estimate.
+
+Despite the large confidence intervals due to small sample sizes, there could still be a small relationship between region and opinions about environmental issues. I tested this out with the Chi-squared test and Cramer's V measure. You can see in the results below that the Chi-squared test indicates evidence of an association, but not in the Cramer's V. Therefore, I conclude that there is not a strong relationship between region and public opinion on this issue.
+
+```{r chi-sq-test}
+cont.table <- with(CIS.data2,  table(CCAA, medio_ambiente) )
+cont.table
+chisq.test(cont.table, simulate.p.value = T)
+cramersV <- lsr::cramersV(cont.table, simulate.p.value = T)
+```
+
+**Cramer's V:** `r cramersV`
+
+The Chi-sq test and cramer's V for the first question indicated a stronger association but still not that strong.
+
+```{r same-for-first-question}
+cont.table <- with(CIS.data2,  table(CCAA, response_flag) )
+cont.table
+chisq.test(cont.table, simulate.p.value = T)
+lsr::cramersV(cont.table, simulate.p.value = T)
+```
+
+### Logistic regression
+
+The simple logistic regression summary below shows evidence that different regions are statistically different in their opinions about the major issues of this decade in Spain. See that Cataluña (, Madrid and País Vasco are significantly different from Anadalucía. These results are in line with the data visualization of the confidence intervals (**Figure B**).
+
+```{r}
+logit_q1 <- glm(response_flag ~ CCAA -1, data = CIS.data2, family = binomial)
+summary(logit_q1)
+knitr::kable(cis_regions, type = "text")
+```
+
+I expect to see that the coefficient estimates will not be statistically significant for the second question. In fact, the results of the multinomial model turned out be very bad at prediction. This model still shows that different CCAA have different mix of opinions.
+
+```{r}
+## partition data first 
+library(caret)
+index <- createDataPartition(CIS.data2$medio_ambiente, p = .7, list = FALSE)
+train.data <- CIS.data2[index,]
+test.data <- CIS.data2[-index,]
+
+## run multinomial 
+multi_q2 <- nnet::multinom(medio_ambiente ~ CCAA, data = train.data)
+summary(multi_q2)
+# confusionMatrix(predict(multi_q2, type = "probs", newdata = test.data), test.data$medio_ambiente )
+```
+
+Let's try the same thing but with a logistic model on just the first answer: *environmental damage will get worse*. You can see from the results below that only five CCAA have coefficient estimates that are significant at a 99.0% confidence level. There is a better than 50-50 chance that a respondent from **Andalucía**, **Islas Canarias**, **Castilla la Mancha**, **Cataluña**, and **País Vasco** believe that the environment will get *worse* in the next 10 years. For all the other regions, we cannot say with certainty that the probability that a respondent will say *worse* any different from 50% chance. However, the second model shown below sets `Andalucía` as the reference and you can see that two CCAA are statistically different at 99% confidence level: **Madrid** and **Valencia**. Therefore, I will conclude that there are three groups :
+
+1)  CCAA with better than 50-50 chance that a respondent thinks environmental damage will get worse
+    -   Andalucía
+    -   Islas Canarias
+    -   Castilla la Mancha
+    -   Cataluña
+    -   País Vasco
+
+<!-- -->
+
+2)  CCAA with about 50% chance
+    -   Madrid
+    -   Valencia
+3)  CCAA without sufficient data
+    -   The rest
+
+```{r}
+mas <- ifelse(CIS.data2$medio_ambiente == 1, 1, 0)
+
+logit_q2 <- glm(mas ~ CIS.data2$CCAA -1, family = binomial)
+logit_q2_intercept <- glm(mas ~ CIS.data2$CCAA, family = binomial)
+stargazer::stargazer(logit_q2, logit_q2_intercept, type = "text")
+```
+
+## 4. GDP by CCAA
+
+```{r}
+glimpse(CCAA_PIB_yearly)
+```
+
+See from the small multiples chart below that all CCAA follow the same trend for GDP at differing levels.
+
+```{r , fig.width=11, fig.height=8}
+CCAA_PIB_yearly |> 
+  ggplot(aes(x = year, y = PIB)) +
+  geom_line() + 
+  geom_point() +
+  geom_smooth(color = "peru", alpha = .5,) +
+  facet_wrap(~CCAAnombre, scales = "free_y") +
+  scale_y_continuous(
+    trans = "log10",
+    labels = scales::label_dollar(scale_cut = scales::cut_short_scale(), suffix = "€")
+  ) +
+  scale_x_continuous(breaks = c(2000, 2010, 2020)) +
+  theme_bw()
+
+# suffix = " Mil€", scale = (1/1000000), largest_with_cents = 0
+```
+
+Now with GDP per capita, you can see that each comunidad is at a different level of economic production and rate of change from 2000 to 2022.
+
+```{r pib_perCapita, fig.width=15, fig.height=8}
+combined_data_pop_pib |> 
+  ggplot(aes(x = year, y = PIB/pop)) +
+  geom_line() + 
+  geom_point() +
+  geom_smooth(color = "peru", alpha = .5, method = "lm") +
+  facet_wrap(~CCAAnombre, scales = "fixed", ncol = 5) +
+  scale_y_continuous(
+    labels = scales::label_dollar(prefix = "€")
+  ) +
+  scale_x_continuous(breaks = c(2000, 2010, 2020)) +
+  theme_bw() +
+  labs( title = "Slope of increasing GDP per capita varies across CCAA",
+    subtitle = "Annual GDP per capita from 2000-2022",
+    x = "Year",
+    y = "Euros per person",
+    caption = "Data source: INE.es"
+  )
+```
+
+```{r}
+linear_reg <- lm(PIB/pop ~ CCAAnombre * I(year-2000) , data = combined_data_pop_pib)
+summary(linear_reg)
+```
+
+I notice a several things here:
+
+-   **Madrid** appears to have the highest level of per capita production. The linear regression results show that it also had the largest annual rate of change since 2000. **País Vaso** also had very high rate of change.
+
+-   **Andalucia**, the reference dummy variable in the model above, had one of the lowest levels of GDP per-capita and annual rate of change.
+
+-   The model looks very good, with R^2^ of 91%. The standard residuals are normally distributed-- with a few outliers as expected. I suspect that the large outlier are from 2020, when the world stopped because of COVID-19 and supply chain shocks.
+
+    ```{r}
+    par(mfrow = c(1,2))
+    res_std <- rstandard(linear_reg)
+    plot(fitted(linear_reg), res_std)
+    qqnorm(res_std)
+    qqline(res_std)
+    ```
+
+-   There are once again different stages to the timelapse of annual economic production. The first stage (2000-2007) has a steep and positve slope. The second stage (2008-2013) has a slight downward slope. The third phase (2014-today) has a positive slope, yet not as steep as the first stage. Important to note is that 2020 was an outlier due to the pandemic and supply chain shocks around the world. It appears that the following years (2021-22) rebounded from the recession and caught up with the third stage trend.
+
+-   The target variable GDP/population in the model is on a bell curve, skewed to the right
+
+    ```{r}
+    hist(combined_data_pop_pib$PIB/combined_data_pop_pib$pop, breaks = 30)
+    ```
+
+## 5. Land area
+
+```{r , fig.width= 11, fig.height=8 }
+land_area |> 
+  left_join(combined_data_pop_pib, by = "CCAAnombre") |> 
+  mutate(pop_density = pop / Superf) |> 
+  filter(year == 2022) |> 
+  ggplot(aes(x = Superf, y = pop, group = CCAAnombre, color = pop_density )) +
+  geom_point(size = 4) + 
+  geom_text(aes(label = CCAAnombre), 
+            check_overlap = F, 
+            nudge_x = -0.1, 
+            size = 2, 
+            color = "black",
+            nudge_y = .05
+            ) +
+  labs(
+    x = "Land area - square km",
+    y = "Population",
+    subtitle = "Population density per CCAA on log scale, 2022",
+    title = expression(paste(bold("Melilla, Ceuta,"), " and ", bold("Madrid"), " have highest density while", bold("Castilla y León"), " and ", bold("Castilla la Mancha"), " have large area but low density."))
+  ) +
+  scale_y_log10() + scale_x_log10() + 
+  scale_color_gradient(trans = "log10", low = "skyblue", high = "red2") +
+  theme_minimal()
+  
+```
+
+Four of the five largest CCAA have the lowest density in Spain. **Andalucía** has the second-largest area but is populated enough to be in the middle. **Melilla** and **Ceuta** are densely populated, but take up less than 20 km^2^ each. Of the rest, **Madrid** is the most densely populated comunidad.
+
+Let's see if this matches up with the economic and energy data.
+
+### Compare pop density with GDP & Energy output
+
+```{r , fig.width= 11 }
+combined_data_pop_pib_land <- land_area |> 
+  select(CCAAnombre, Superf) |> 
+  left_join(combined_data_pop_pib, by = "CCAAnombre") |> 
+  mutate(pop.density = pop / Superf)
+
+subset_wOut_CM_2022 <- combined_data_pop_pib_land |> 
+  filter( ! CCAAnombre %in% c("Ceuta","Melilla") ) |> 
+  filter(year == 2022)
+
+cor.test(log10(subset_wOut_CM_2022$pop.density), log10(subset_wOut_CM_2022$PIB))
+  
+combined_data_pop_pib_land |> 
+ #filter(year == 2022) |> 
+  ggplot(aes(pop.density, PIB)) +
+  geom_text(aes(label = CCAAnombre)) +
+  geom_point() +
+  scale_x_log10() + scale_y_log10() +
+  geom_smooth(
+    method = "lm", data = combined_data_pop_pib_land[combined_data_pop_pib_land$pop.density < 3000,], 
+    color = "red4", ) +
+  theme_minimal() +
+  labs(
+    x = "Population density - persons per square km",
+    y = "GDP in Euros",
+    subtitle = "Relationship between population density and economic output",
+    title = "Evidence of a positive relationship"
+  )
+```
+
+Leaving out the the clear outliers, you can see that there is evidence of a positive relationship between population density and economic output. The Pearson's product moment correlation test shows evidence that there is a relationship. But when you include **Melilla** and **Ceuta** the linear relationship breaks. I think I need another variable to take into account those two comunidades located in the African continent for a linear relationship to work for all the data.
+
+```{r total-generated, fig.width= 11}
+red_data_yr <- red_data  |> 
+  mutate(yr = lubridate::year(lubridate::dhours(2) + datetime))
+combined_data_pop_pib_land_energy <- combined_data_pop_pib_land |> 
+  filter(year >= 2014 & year < 2023) |> 
+  full_join(red_data_yr, by = join_by("CCAAnombre" == "ccaa", "year" == "yr" ))
+
+subset_total <- combined_data_pop_pib_land_energy |> 
+  filter( name == "Generación total" )
+  
+cor.test(log10(subset_total$pop.density), 
+         log10(subset_total$value ))
+  
+subset_total |> 
+ filter(date == as.Date("2023-11-30")) |> 
+  ggplot(aes(pop.density, value)) +
+  geom_text(aes(label = CCAAnombre), nudge_y = 0.05) +
+  geom_point() +
+  scale_x_log10() +  
+  scale_y_continuous(
+      trans = "log10", 
+     # labels = scales::label_number( scale_cut = scales::cut_long_scale())
+      ) +
+  geom_smooth(
+    method = "lm", 
+    color = "red4", data = subset_total) +
+   geom_smooth(
+    method = "lm", 
+    color = "red", data = subset_total[subset_total$pop.density < 400,]) +
+  theme_minimal() +
+  labs(
+    x = "Population density - persons per square km",
+    y = "Total energy generated - MWh",
+    subtitle = "Relationship between population density and energy output",
+    title = "Evidence of a negative relationship"
+  )
+```
+
+Although there appears to be a relationship between population density and energy generation, the CCAAs with the most generated vary in land area and population. See the top 5 here:
+
+```{r top5-generated}
+subset_total |> 
+  filter(date == as.Date("2023-11-30")) |> 
+  slice_max(value, n = 5)
+```
+
+```{r wind-energy,  fig.width= 11, fig.height= 8}
+subset_wind <- combined_data_pop_pib_land_energy |> 
+  filter( name == "Eólica" )
+  
+cor.test(log10(subset_wind$pop.density), 
+         log10(subset_wind$value ))
+  
+subset_wind |> 
+ filter(date == as.Date("2023-10-31")) |> 
+  ggplot(aes(pop.density, percentage)) +
+  geom_hline(yintercept = c(0,1)) +
+  geom_text(aes(label = CCAAnombre),
+            nudge_y = 0.02) +
+  geom_point() +
+  scale_x_log10() + 
+  scale_y_continuous(
+    labels = scales::label_percent()
+  ) +
+  geom_smooth(
+    method = "lm", formula = y ~ x,
+    color = "red4", 
+    data = subset_wind[subset_wind$CCAAnombre != "Extremadura",]) +
+  theme_minimal() +
+  labs(
+    x = "Population density - persons per square km",
+    y = "Wind energy as proportion of total",
+    subtitle = "Relationship between population density and wind energy dependency, Oct 2023",
+    title = "Evidence of a negative relationship "
+  )
+```
+
+### Energy generation and GDP
+
+```{r energy-gdp, fig.width=11, fig.height=8, fig.cap="Energy Intensity"}
+
+library(patchwork)
+
+pltA <- subset_total |> 
+  filter(date == as.Date("2023-10-31")) |> 
+  ggplot(aes(PIB, value)) +
+  geom_point() +
+  geom_text(aes(label = CCAAnombre), 
+            nudge_y = 0.05,
+            color = "gray30", size = 2) +
+  scale_x_continuous(
+    trans = "log10",
+   # labels = scales::label_number( scale_cut = scales::cut_long_scale())
+    ) +
+  scale_y_continuous(
+    trans = "log10",
+   # labels = scales::label_number( scale_cut = scales::cut_long_scale())
+  ) +
+  labs(
+    y = "Total energy generated - MWh",
+    x = "Annual GDP - €",
+    subtitle = "Relationship on log scale, Oct 2023"
+  ) +
+  theme_bw()
+  
+pltB <- subset_total |> 
+  filter(date == as.Date("2023-10-31")) |> 
+  ggplot(aes(PIB, value)) +
+  geom_abline(
+    slope = c(1/100, 4/100), 
+    color = "red4", 
+    linetype = "dashed"
+  ) +
+  geom_point()  +
+  geom_text(aes(label = CCAAnombre), 
+           nudge_y = 50000, 
+            color = "gray30", size = 2
+          ) +
+  scale_x_continuous(
+   # labels = scales::label_number( scale_cut = scales::cut_long_scale())
+    ) +
+  scale_y_continuous(
+   # labels = scales::label_number( scale_cut = scales::cut_long_scale())
+  ) +
+  labs(
+    y = "Total energy generated - MWh",
+    x = "Annual GDP - €",
+    subtitle = "Relationship on linear scale, Oct 2023"
+  ) +
+  theme_bw()
+
+pltA + pltB + patchwork::plot_annotation(title = "Evidence of both log-log (A) and linear (B) relationship between energy and economic output", tag_levels = "A")
+```
+
+Here an interesting thing appears: the regions with the largest population density (**Mellilla**, **Ceuta**, **Madrid**) are not shown because they do not produce any wind energy. But there still appears to be a negative relationship between density and wind energy, as a proportion of total energy. Except for **Extremadura**-- a clear outlier-- the sparsely populated regions like **Aragón** and the two "Castilla" comunidades generated a lot of their energy from wind.
+
+**Extremadura**, despite being one of the largest total energy generators, has basically zero wind energy.
+
+**Navarra** and **La Rioja** generate a lot of their energy from wind, despite being on the low end of total energy.
+
+```{r}
+
+```
+
+# Conclusions:
+
+Here are key takeaways:
+
+1.  There are clear groups with similar energy intensity:
+
+    1.  **Galicia**, **Aragón**, **Extremadura** and the two **Castillas**
+    2.  **Melilla** and **Ceuta**
+    3.  **Madrid**
+    4.  The rest.
+
+2.  Population density is negatively correlated with proportion of energy generation sourced from wind. Densely populated regions like **Madrid**, **Cataluña**, and **Islas Baleares** have very low wind generation. **Extremadura** is an outlier because it is sparsely populated but has basically no wind generation. One explanation for it's high energy generation is that it has nuclear power plants.
+
+3.  Energy generation, measured by Watt-hours, is roughly normally distributed when split up by CCAA. As a whole, the data from years 2014-2023 does not follow a bell curve. But when we split up the data by region, you can see a bell curve and a few trends:
+
+    1.  The 2021 to 2023 price inflation crisis did not affect energy generation. The trends from before continued for almost all regions.
+    2.  There is no clear pattern across CCAA for time trends. Varying trends appear in the data. On the other hand, there is a clear pattern across CCAA for GDP. All the CCAA show the same trend in GDP over time, despite producing at varying levels.
+
+4.  Survey results show that different regions vary on opinions about the environment and energy. However, the data show that it is likely that most people, in most CCAA, believe that environmental degradation will get worse. It appears that the most densely populated CCAA have a higher likelihood of having more people believe that climate and energy-related issues are the most important in Spain nowadays.
+
+## Possible next steps:
+
+a)  PCA to find groups or clusters of CCAA
+
+b)  research more literature and discuss with experts
+
+c)  Regression models with all data
+
+d)  Check for autocorrelation across time
+
+## Notes with Prof Pablo
+
+GDP per capita would be useful as covariate.
+
+Share of industry in each region.
+
+Structure of economy has big influence on energy intensity. Financial services are less energy intense, as apposed to industrial economy. Higher share of services will have lower energy intensity.
+
+energy is consumed by individuals and by companies/production/industry.
+
+electricity prices are same everywhere, but not oil, gas, petrol, prices. so it's not relevant unless you take into account inflation for each ccaa. use petrol prices instead.
+
+NO ELECTRICITY TAXES per region
+
+be careful that the explanatory is not being explained by target variable, instead of other away around.
+
+# More analysis
+
+## Electricity consumption
+
+```{r}
+consumo_data <- read_csv("./consumo_data.csv") |> 
+  select(-percentage)
+```
+
+```{r PIVOT}
+
+
+PIVOT_data_pop_pib_land_energy <- combined_data_pop_pib_land_energy |> 
+  left_join(consumo_data, by = join_by("CCAAnombre" == "ccaa", "datetime")) |> 
+  pivot_wider(names_from = c(name.x, name.x), values_from = c(value.x, percentage),values_fill = 0) |> 
+  mutate(
+    month = lubridate::month(lubridate::days(1) + datetime)
+  )
+```
+
+```{r}
+library(patchwork)
+plta <- consumo_data |> 
+  ggplot(aes(x = value, y =ccaa, color = date)) +
+  geom_point(size =4, alpha = .2) +
+  geom_boxplot(alpha = .2) +
+  scale_color_continuous(type = "viridis", trans = "date") +
+  # scale_x_log10() +
+  theme_bw() +
+  labs(
+    x = "MWh",
+    y = NULL,
+    subtitle= NULL,
+    title = "Linear scale",
+  )
+
+pltb <- consumo_data |> 
+  ggplot(aes(x = value, y =ccaa, color = date)) +
+  geom_point(size =4, alpha = .2) +
+  geom_boxplot(alpha = .2) +
+  scale_color_continuous(type = "viridis", trans = "date") +
+  scale_x_log10() +
+  theme_bw() +
+  labs(
+    x = "MWh",
+    y = NULL,
+    subtitle = NULL,
+    title = "Log scale",
+  )
+
+plta + pltb +plot_layout(guides = "collect") +
+  plot_annotation(title = "Total elecricity consumed per CCAA, 2014-23, Monthly", 
+                  caption = "Data: Red Eléctrica")
+```
+
+```{r}
+consumo_data |> 
+  ggplot(aes(x = as.Date(datetime), y = value)) +
+  geom_line() +
+  geom_smooth(color = "red3") +
+  facet_wrap(~ccaa, scales = "free_y") +
+  theme_bw() +
+  scale_y_continuous(
+    labels = scales::label_number(scale_cut = scales::cut_short_scale())
+  ) +
+  scale_x_date(date_labels = "'%y", minor_breaks = NULL) +
+  labs(
+    y = "MWh",
+    x = NULL,
+    subtitle = "Total electricity consumed per CCAA, 2014-23, Monthly",
+    title = "No clear pattern for all CCAA, some increase, some decreasing",
+    caption = "Data: Red Eléctrica"
+  )
+```
+
+### Relationship between consumed and generated
+
+```{r}
+PIVOT_data_pop_pib_land_energy |> 
+  ggplot(aes(`value.x_Generación total`, value.y, color = CCAAnombre, label = CCAAnombre)) +
+  geom_path(arrow = arrow(length = unit(0.3, "cm"))) +
+  # geom_text() + 
+  scale_x_log10() +
+  scale_y_log10() +
+  labs(
+    x = "Energy generated - MWh",
+    y = "Electricity consumed - MWh", 
+    title = "Islas Baleares's large seasonal variations correlate with generation"
+  ) +
+  theme_minimal()
+```
+
+Islas Baleares does not have wind energy. But it does fluctuate a lot in both generation and consumption at the same times of the year.
+
+```{r islasB}
+islasB <- PIVOT_data_pop_pib_land_energy |> 
+  filter(CCAAnombre == 'Islas Baleares')
+cor.test(islasB$`value.x_Generación total`, islasB$value.y) 
+```
+
+```{r, eval=FALSE}
+DataExplorer::create_report(PIVOT_data_pop_pib_land_energy)
+```
+
+```{r}
+PIVOT_data_pop_pib_land_energy |> 
+  filter(date.x == as.Date("2023-10-31")) |> 
+  ggplot(aes(x = `value.x_Generación total`, y = value.y, label = CCAAnombre)) +
+  geom_text( 
+           vjust = -1.1, 
+            color = "gray30", size = 2
+          ) + 
+  geom_point() +
+  scale_x_continuous(
+    trans = "log10",
+   # labels = scales::label_number( scale_cut = scales::cut_long_scale())
+  ) +
+  scale_y_continuous(
+    trans = "log10",
+   # labels = scales::label_number( scale_cut = scales::cut_long_scale())
+  ) +
+  labs(
+    x = "Energy generated - MWh",
+    y = "Electricity consumed - MWh", 
+    title = "Similar groups appear as before",
+    subtitle = "Relationship b/w energy generation and electricity consumption, Oct'23"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+PIVOT_data_pop_pib_land_energy |> 
+ #  filter(pop > 100000) |> 
+  filter(date.x == as.Date("2023-10-31")) |> 
+  ggplot(aes(x = PIB, y = value.y, label = CCAAnombre, 
+             color = percentage_Eólica)) +
+  geom_text( 
+           hjust = -.20, size = 4
+          ) + 
+  geom_point(size = 4) +
+  scale_x_continuous(
+    # trans = "log10",
+    labels = scales::label_number( scale_cut = scales::cut_long_scale())
+  ) +
+  scale_y_continuous(
+    # trans = "log10",
+    labels = scales::label_number( scale_cut = scales::cut_long_scale())
+  ) +
+  scale_color_gradient(labels = scales::label_number( scale_cut = scales::cut_short_scale()),
+    low = "gray",
+    high = "darkgreen"
+  ) +
+  labs(
+    x = "GDP €",
+    y = "Electricity consumed MWh", 
+    title = "CCAA that generate lots of wind energy not most energy efficient",
+    subtitle = "Relationship b/w energy generation and electricity consumption, Oct'23",
+    color= "Electricity generated\nfrom wind - MWh"
+  ) +
+  theme_minimal()
+```
+
+Energy consumption is strongly correlated to GDP
+
+```{r}
+cor.test(PIVOT_data_pop_pib_land_energy$PIB, PIVOT_data_pop_pib_land_energy$value.y)
+```
+
+Difference between consumption and generated? And compared to GDP?
+
+```{r}
+PIVOT_data_pop_pib_land_energy |> 
+  ggplot(aes(x = `value.x_Generación total`- value.y, 
+             y = reorder(CCAAnombre, PIB, max), 
+             # color = 0 < `value.x_Generación total`- value.y,
+             color = datetime,
+             alpha = datetime)) +
+  geom_vline(xintercept = 0) + 
+  geom_boxplot(color = "black", alpha = 1) +
+  geom_jitter(height = .1) +
+  theme_minimal() +
+  labs(
+    y = NULL,
+    x = "Difference b/w Electricity Generated minus Consumed - MWh",
+    subtitle = "CCAA order by GDP",
+    title = "Top 5 largest economies consume more electricity than generated"
+  ) +
+  scale_x_continuous(
+    labels = scales::label_number(scale_cut = scales::cut_long_scale()), 
+    position = "top"
+  ) +
+  scale_color_continuous(type = "viridis") +
+  theme(
+    legend.position = "none"
+  )
+```
+
+```{r}
+PIVOT_data_pop_pib_land_energy |> 
+  ggplot(aes(y = value.y/PIB, x = datetime)) +
+  geom_line() + 
+  geom_smooth(color = "peru", alpha = .5, method = "lm") +
+  facet_wrap(~CCAAnombre, scales = "fixed", ncol = 5) +
+  scale_y_continuous(
+  ) +
+#  scale_x_continuous(breaks = c(2000, 2010, 2020)) +
+  theme_bw() +
+  labs( title = "Slope of energy intensity varies across CCAA",
+    subtitle = "Electricity consumption per GDP from 2014-2022",
+    x = "Year",
+    y = "MWh per Euro",
+    caption = "Data source: INE.es, Red Eléctrica" 
+  ) +
+  theme(
+    panel.grid = element_blank()
+  )
+```
+
+## Questions to narrrow down on?
+
+1.  **Extremadura** is an outlier in no wind. Why?
+2.  Aragón is
+
+```         
+```
+
+```{r}
+library(lme4) 
+lmm1 <- lme4::lmer(value.y ~ date.x + (1 | CCAAnombre) + PIB , 
+                   data = PIVOT_data_pop_pib_land_energy)
+summary(lmm1)
+```
+
+```{r}
+save.image()
+```
