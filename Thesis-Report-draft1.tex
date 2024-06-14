@@ -224,7 +224,7 @@ couple months have a siginificant affect on predicting energy intensity.
 And different months do not have significant affect mean intensity
 overall. Only when combined with CCAA does it show an effect.
 \end{abstract}
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[interior hidden, enhanced, breakable, sharp corners, boxrule=0pt, borderline west={3pt}{0pt}{shadecolor}, frame hidden]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, enhanced, interior hidden, sharp corners, frame hidden, borderline west={3pt}{0pt}{shadecolor}, breakable]}{\end{tcolorbox}}\fi
 
 \renewcommand*\contentsname{Table of contents}
 {
@@ -288,7 +288,7 @@ The following object is masked from 'package:purrr':
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{rm}\NormalTok{(}\AttributeTok{list =} \FunctionTok{ls}\NormalTok{())}
-\FunctionTok{load}\NormalTok{(}\StringTok{".RData"}\NormalTok{)}
+\FunctionTok{load}\NormalTok{(}\StringTok{"\textasciitilde{}/Documents/UC3M/Masters Thesis/.RData"}\NormalTok{)}
 
 \NormalTok{new\_theme }\OtherTok{\textless{}{-}} \FunctionTok{theme\_classic}\NormalTok{()}
 \FunctionTok{theme\_set}\NormalTok{(new\_theme)}
@@ -422,7 +422,7 @@ and energy intensity.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{cor\_plot }\OtherTok{\textless{}{-}}\NormalTok{ DataExplorer}\SpecialCharTok{::}\FunctionTok{plot\_correlation}\NormalTok{(agg\_data2022[,}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{7}\NormalTok{,}\DecValTok{8}\NormalTok{,}\DecValTok{11}\NormalTok{,}\DecValTok{14}\SpecialCharTok{:}\DecValTok{15}\NormalTok{,}\DecValTok{17}\NormalTok{,}\DecValTok{20}\SpecialCharTok{:}\DecValTok{31}\NormalTok{,}\DecValTok{34}\SpecialCharTok{:}\DecValTok{37}\NormalTok{)], }
+\NormalTok{cor\_plot }\OtherTok{\textless{}{-}}\NormalTok{ DataExplorer}\SpecialCharTok{::}\FunctionTok{plot\_correlation}\NormalTok{(agg\_data2022[,}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{7}\NormalTok{,}\DecValTok{8}\NormalTok{,}\DecValTok{11}\NormalTok{,}\DecValTok{14}\SpecialCharTok{:}\DecValTok{15}\NormalTok{,}\DecValTok{17}\NormalTok{,}\DecValTok{20}\SpecialCharTok{:}\DecValTok{24}\NormalTok{, }\DecValTok{26}\SpecialCharTok{:}\DecValTok{31}\NormalTok{,}\DecValTok{34}\SpecialCharTok{:}\DecValTok{37}\NormalTok{)], }
                                \AttributeTok{geom\_text\_args =} \FunctionTok{list}\NormalTok{(}\AttributeTok{size =} \DecValTok{2}\NormalTok{), }
                                \AttributeTok{ggtheme =} \FunctionTok{theme\_classic}\NormalTok{(), }
 \NormalTok{                               )}
@@ -794,7 +794,7 @@ significant?}\label{are-the-survey-results-significant}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{ggsave}\NormalTok{(}\AttributeTok{filename =} \StringTok{"issues{-}ccaa.pdf"}\NormalTok{, }\AttributeTok{width =} \DecValTok{7}\NormalTok{, }\AttributeTok{height =} \DecValTok{7}\NormalTok{, }\AttributeTok{units =} \StringTok{"in"}\NormalTok{ )}
+\FunctionTok{ggsave}\NormalTok{(}\AttributeTok{filename =} \StringTok{"issues{-}ccaa.pdf"}\NormalTok{, }\AttributeTok{width =} \DecValTok{7}\NormalTok{, }\AttributeTok{height =} \DecValTok{5}\NormalTok{, }\AttributeTok{units =} \StringTok{"in"}\NormalTok{ )}
 \end{Highlighting}
 \end{Shaded}
 
@@ -836,7 +836,7 @@ significant?}\label{are-the-survey-results-significant}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{ggsave}\NormalTok{(}\AttributeTok{filename =} \StringTok{"mas{-}ccaa.pdf"}\NormalTok{, }\AttributeTok{width =} \DecValTok{7}\NormalTok{, }\AttributeTok{height =} \DecValTok{7}\NormalTok{, }\AttributeTok{units =} \StringTok{"in"}\NormalTok{ )}
+\FunctionTok{ggsave}\NormalTok{(}\AttributeTok{filename =} \StringTok{"mas{-}ccaa.pdf"}\NormalTok{, }\AttributeTok{width =} \DecValTok{7}\NormalTok{, }\AttributeTok{height =} \DecValTok{5}\NormalTok{, }\AttributeTok{units =} \StringTok{"in"}\NormalTok{ )}
 \end{Highlighting}
 \end{Shaded}
 

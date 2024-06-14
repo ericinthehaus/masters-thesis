@@ -121,7 +121,7 @@ cor_plot <- DataExplorer::plot_correlation(agg_data2022[,c(2,4,7,8,11,14:15,17,2
                                ggtheme = theme_classic(), 
                                )
 
-ggsave(filename = "cor_plot.pdf", cor_plot, width = 9, height = 7, units = "in" )
+ggsave(filename = "cor_plot.pdf", cor_plot, width = 7, height = 6, units = "in" )
 ```
 
 ## Linear Models
@@ -350,7 +350,7 @@ survey |>
   ) +
   scale_x_continuous(
     labels = scales::label_percent(),
-    limits = c(0,1),
+    limits = c(0,NA),
     oob = scales::squish
   )  +
   theme(
@@ -381,14 +381,17 @@ survey |>
   ) +
   scale_x_continuous(
     labels = scales::label_percent(),
-    limits = c(0,1),
-    oob = scales::squish
+    limits = c(NA,1),
+    oob = scales::squish,
+   # breaks = seq(from = 0, to = 1, by = 0.2 ),
+    
   )  +
   theme(
     axis.text.y = element_text(size = 12, face = "bold", color = "black"),
     panel.grid.major.x = element_line(color = "gray75", linetype = "dotted"),
     panel.grid.minor.x = element_line(color = "gray75", linetype = "dotted")
   )
+
 ggsave(filename = "mas-ccaa.pdf", width = 7, height = 5, units = "in" )
 
 
