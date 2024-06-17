@@ -436,7 +436,7 @@ plot(varImp(glmnet_tune, scale = F),
 partial(glmnet_tune, pred.var = "logEolica", plot = T, rug = TRUE) 
 partial(glmnet_tune, pred.var = "logPopden", plot = T, rug = TRUE) 
 partial(glmnet_tune, pred.var = "prec", plot = T, rug = TRUE) 
-
+partial(glmnet_tune, pred.var = "CCAAnombre", plot = T, rug = TRUE) 
 
 ```
 
@@ -446,8 +446,8 @@ The elastic net model does a lot better than the other linear models based off R
 
 ```{r}
 glmnet_tune_noCCAA <- train(
-  energy_int ~ logEolica + issues_p + ns + mas + menos + igual + 
-  logGenTotal + logPopden + prec + I(prec^2) + tmax + land_area+ percentage_Eólica , 
+  energy_int ~ logEolica + issues_p + ns + mas + menos + igual  +
+  logGenTotal + logPopden + prec + I(prec^2) + tmax + land_area + percentage_Eólica , 
   data = agg_data2022,
                      method='glmnet',
                      preProc=c('scale','center'),

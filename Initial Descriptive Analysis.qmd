@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, fig.width =
 library(tidyverse)
 
 # source("./CollectingCovariateData.R")
-load("data.RData")
+load(".RData")
 ```
 
 # Red Eléctrica electricity generation
