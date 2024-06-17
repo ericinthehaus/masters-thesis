@@ -159,17 +159,25 @@ pull_data <- function(start_date, end_date, category = "demanda", widget = "evol
 # PULL ALL YEARS: ----
 
 ## generation done before ----
-Y14.15 <- pull_data(start_date = "2014-01-01T00:00", end_date = "2015-12-31T23:59")
-Y16.17 <- pull_data(start_date = "2016-01-01T00:00", end_date = "2017-12-31T23:59")
-Y18.19 <- pull_data(start_date = "2018-01-01T00:00", end_date = "2019-12-31T23:59")
-Y20.21 <- pull_data(start_date = "2020-01-01T00:00", end_date = "2021-12-31T23:59")
-Y22.23 <- pull_data(start_date = "2022-01-01T00:00", end_date = "2023-12-31T23:59")
+Y14.15 <- pull_data(start_date = "2014-01-01T00:00", end_date = "2015-12-31T23:59",
+                    category = "generacion", widget = "estructura-generacion")
+Y16.17 <- pull_data(start_date = "2016-01-01T00:00", end_date = "2017-12-31T23:59",
+                    category = "generacion", widget = "estructura-generacion")
+Y18.19 <- pull_data(start_date = "2018-01-01T00:00", end_date = "2019-12-31T23:59",
+                    category = "generacion", widget = "estructura-generacion")
+Y20.21 <- pull_data(start_date = "2020-01-01T00:00", end_date = "2021-12-31T23:59",
+                    category = "generacion", widget = "estructura-generacion")
+Y22.23 <- pull_data(start_date = "2022-01-01T00:00", end_date = "2023-12-31T23:59", 
+                    category = "generacion", widget = "estructura-generacion")
 
 wind_data <- rbind(Y14.15, Y16.17, Y18.19, Y20.21, Y22.23) |> 
   filter(name == "Eólica" & name == "Generación total")
 
 red_data <- rbind(Y14.15, Y16.17, Y18.19, Y20.21, Y22.23) |> 
   filter(name == "Eólica" | name == "Generación total")
+
+carbon_data <- rbind(Y14.15, Y16.17, Y18.19, Y20.21, Y22.23) |> 
+  filter(name == "Carbón" )
 
 write_csv(red_data, file = "red_data.csv")
 

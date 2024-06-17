@@ -33,7 +33,7 @@ new_theme <- theme_classic()
 theme_set(new_theme)
 theme_update(
   plot.background = element_rect(fill = "gray90"),
-  plot.title.position = "plot"
+  plot.title.position = "plot", 
 )
 ```
 
@@ -89,8 +89,17 @@ agg_data2022 <- agg_data |>
 ## Correlations 
 The Pearson's correlation between wind energy generated (MWh) and energy intensity (MWh/€) is `r cor(agg_data2022$Eolica, agg_data2022$energy_int)`. But the correlation changes to `r cor(agg_data2022$logEolica, agg_data2022$energy_int)` when you use the logged wind generation. That suggests that the relationship is log-linear. In other words, a multiplicative change to wind energy is associated with a linear unit of change in energy intensity. Since the correlation is positive, we can say that a multiplicative increase in wind energy is associated with a linear increase in energy intensity. 
 
+```{r, fig.width=7, fig.height=6}
+ggcorrplot::ggcorrplot(cor(agg_data2022[, c(2,4,7,8,11,14:15,17,20:24,26:31,34:37)]),
+                        type = "lower", hc.order = T, 
+                       ggtheme = theme_gray()
+                       )
+```
+
 
 ```{r cor-plot, fig.height=9, fig.width= 7, fig.cap="Correlation Matrix"}
+
+
 DataExplorer::plot_correlation(agg_data2022[, c(2,4,7,8,11,14:15,17,20:24,26:31,34:37)], 
                                title = "Correlation matrix of all variables", 
                                geom_text_args = list(size = 2), 
@@ -232,7 +241,7 @@ We will use 2014 data at the test data.
 ```{r agg-2014}
 agg_data2014 <- agg_data |> 
   filter(
-    lubridate::year(date) == 2014 
+    lubridate::year(date) == 2014
   ) 
 ```
 
@@ -354,7 +363,7 @@ postResample(pred = test_results$rf_noCCAA, obs = test_results$actual_2014)
 
 ```{r}
 rf_tune_small <- train(
-  energy_int ~ Eolica + prec + tmin + mas + ns + pop + 
+  energy_int ~ Eolica + prec + tmin + mas + issues_p + pop + 
     percentage_Eólica + GenTotal, 
                  data = agg_data2022,
                  method = "rf",
@@ -373,7 +382,7 @@ plot(varImp(rf_tune_small, scale = F) , scales = list(y = list(cex = .95)))
 partial(rf_tune_small, pred.var = "Eolica", plot = T, rug = TRUE)
 partial(rf_tune_small, pred.var = "GenTotal", plot = T, rug = TRUE)
 partial(rf_tune_small, pred.var = "percentage_Eólica", plot = T, rug = TRUE)
-partial(rf_tune_small, pred.var = "pop", plot = T, rug = TRUE)
+partial(rf_tune_small, pred.var = "issues_p", plot = T, rug = TRUE)
 ```
 
 ```{r}
@@ -504,19 +513,27 @@ stats_results |>
   scale_x_continuous(
     labels = scales::label_percent(),
     breaks = c(0,.2,.4, .6, .8, 1)
-  ) + theme(axis.line = element_blank())
+  ) 
 ```
 
 
 The ordinary linear regression models perform the worst. They are worse than the RF without CCAA. I think this is because RF uses non-linear techniques of manipulating the predictors and find the results in ways that linear regression cannot. Also, removing CCAA from the equation has a big factor in linear techniques. 
 
 ```{r , fig.height=7}
-DataExplorer::plot_correlation(test_results, type = "all", ggtheme = theme_classic())
+
+ggcorrplot::ggcorrplot(cor(test_results), type = "lower", 
+                       ggtheme = new_theme, hc.order = F, lab = T,
+                       
+                       )
+
+DataExplorer::plot_prcomp(test_results,  ggtheme = theme_classic(), )
 DataExplorer::plot_density(test_results, 
                            title = "`rf`, `rf_noCCAA` and `lmer_basic` most closely resemble the actual 2014 energy intensity values", 
                            theme_config = list(panel.border = element_rect(colour = "black", fill = NA)
                                                )
                            )
+
+
 ```
 
 ```{r knn ,eval=FALSE}

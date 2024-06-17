@@ -116,6 +116,17 @@ ggsave(filename = "relationship.pdf", relationship_plot,
 Pearson's correlation coefficient was used to assess the relationships between variables. The correlation matrix (Figure 1) highlights the key relationships, indicating a log-linear relationship between wind energy and energy intensity.
 
 ```{r}
+ggcorPlot <- ggcorrplot::ggcorrplot(cor(agg_data2022[, c(2,4,7,8,11,14:15,17,20:24,26:31,34:37)]),
+                        type = "lower", hc.order = T, 
+                       ggtheme = theme_gray() + 
+                         theme(legend.position = "top", panel.grid.major.x = element_blank())
+                       )
+
+ggsave("ggcorPlot.pdf", ggcorPlot, width = 7, height = 7, units = "in")
+```
+
+
+```{r}
 cor_plot <- DataExplorer::plot_correlation(agg_data2022[,c(2,4,7,8,11,14:15,17,20:24, 26:31,34:37)], 
                                geom_text_args = list(size = 2), 
                                ggtheme = theme_classic(), 
