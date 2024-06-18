@@ -64,14 +64,18 @@ Understanding Jevon's paradox is critical for policy decisions surrounding renew
 
 The dataset used in this study includes various variables such as monthly electricity generation and consumption, population, economic indicators, survey results, and climate data. The data was downloaded directly from official government websites and from using their APIs.
 
-```{r wind-data-plot}
+```{r wind-data-facet}
 wind_data_plot <- PIVOT_data_pop_pib_land_energy |> 
   ggplot(aes(x = as.Date(datetime), y = percentage_Eólica)) +
   geom_line() +
   geom_smooth(color = "#000066") +
   facet_wrap(~CCAAnombre, scales = "free_y", ncol = 4) +
   scale_x_date(date_labels = "'%y", minor_breaks = NULL) +
-  scale_y_continuous(labels = scales::label_percent(accuracy = NULL), minor_breaks = NULL) +
+  scale_y_continuous(
+    labels = scales::label_percent(accuracy = NULL), 
+    minor_breaks = NULL,
+    limits = c(0, NA)
+    ) +
   labs(
     y = "Wind energy as percentage of total",
     x = NULL,
@@ -301,28 +305,28 @@ glmnet_varImp_plot <- glmnet_varImp |>
 ggsave("glmnet_varImp_plot.pdf", glmnet_varImp_plot, width = 7, height = 5, units = "in")
 ```
 
-```{r}
-partial_1 <- partial(rf_tune_small, pred.var = "Eolica", plot = F) |> 
-  ggplot(aes(y = yhat, x = Eolica)) + geom_line() +
+```{r glmnet-tune-}
+partial_1 <- partial(glmnet_tune, pred.var = "logEolica", plot = F) |> 
+  ggplot(aes(y = yhat, x = logEolica)) + geom_line() +
   geom_point(color = "#000066") + #ylim(c(13,18))+
   scale_x_continuous(labels = scales::label_number(scale_cut = scales::cut_long_scale()))
-partial_2 <- partial(rf_tune_small, pred.var = "prec", plot = F) |> 
+partial_2 <- partial(glmnet_tune, pred.var = "prec", plot = F) |> 
   ggplot(aes(y = yhat, x = prec)) + geom_line() + #ylim(c(13,18)) +
   geom_point(color = "#000066") 
-partial_3 <- partial(rf_tune_small, pred.var = "GenTotal", plot = F) |> 
-  ggplot(aes(y = yhat, x = GenTotal)) +geom_line() +
+partial_3 <- partial(glmnet_tune, pred.var = "logGenTotal", plot = F) |> 
+  ggplot(aes(y = yhat, x = logGenTotal)) +geom_line() +
   geom_point(color = "#000066") + #ylim(c(13,18))+
   scale_x_continuous(labels = scales::label_number(scale_cut = scales::cut_long_scale()))
-partial_4 <- partial(rf_tune_small, pred.var = "pop", plot = F) |> 
-  ggplot(aes(y = yhat, x = pop)) + geom_line() +
+partial_4 <- partial(glmnet_tune, pred.var = "logPop", plot = F) |> 
+  ggplot(aes(y = yhat, x = logPop)) + geom_line() +
   geom_point(color = "#000066")+# ylim(c(13,18))+
   scale_x_continuous(labels = scales::label_number(scale_cut = scales::cut_long_scale())) 
-partial_5 <- partial(rf_tune_small, pred.var = "percentage_Eólica", plot = F) |> 
+partial_5 <- partial(glmnet_tune, pred.var = "percentage_Eólica", plot = F) |> 
   ggplot(aes(y = yhat, x = percentage_Eólica)) + geom_line() +
   geom_point(color = "#000066")+ # ylim(c(13,18))+
   scale_x_continuous(labels = scales::label_percent() )
 
-partial_6 <- partial(rf_tune_small, pred.var = "mas", plot = F) |> 
+partial_6 <- partial(glmnet_tune, pred.var = "mas", plot = F) |> 
   ggplot(aes(y = yhat, x = mas)) + geom_line() +
   geom_point(color = "#000066")+ #ylim(c(13,18))+
   scale_x_continuous(labels = scales::label_percent() ) 
@@ -332,6 +336,53 @@ partial_glmnet <- (partial_1 + partial_3)/(partial_2 + partial_4) /(partial_5 + 
 ggsave(partial_glmnet, filename = "partial_glmnet.pdf", width = 7, height = 7, units = "in" )
 ```
 
+
+```{r glmnet-noCCAA}
+var_imp <- varImp(glmnet_tune_noCCAA, scale = F)
+glmnet_varImp <- data.frame(
+  var   = row.names(var_imp$importance),
+  importance = var_imp$importance[1]
+)
+glmnet_varImpnoCCAA_plot <- glmnet_varImp |> 
+  ggplot(aes(x = Overall, xmin = 0, xmax = Overall, 
+             y = reorder(var, Overall))) +
+  geom_linerange() + geom_point(color = "#000066") + 
+  geom_vline(xintercept = 0) + 
+  labs(y = NULL, x = "Importance") + theme(plot.background = element_rect(fill = "gray75"))
+
+ggsave("glmnet_varImpnoCCAA_plot.pdf", glmnet_varImpnoCCAA_plot, width = 7, height = 5, units = "in")
+```
+
+```{r}
+partial_1 <- partial(glmnet_tune_noCCAA, pred.var = "logEolica", plot = F) |> 
+  ggplot(aes(y = yhat, x = logEolica)) + geom_line() +
+  geom_point(color = "#000066") + #ylim(c(13,18))+
+  scale_x_continuous(labels = scales::label_number(scale_cut = scales::cut_long_scale()))
+partial_2 <- partial(glmnet_tune_noCCAA, pred.var = "prec", plot = F) |> 
+  ggplot(aes(y = yhat, x = prec)) + geom_line() + #ylim(c(13,18)) +
+  geom_point(color = "#000066") 
+partial_3 <- partial(glmnet_tune_noCCAA, pred.var = "logGenTotal", plot = F) |> 
+  ggplot(aes(y = yhat, x = logGenTotal)) +geom_line() +
+  geom_point(color = "#000066") + #ylim(c(13,18))+
+  scale_x_continuous(labels = scales::label_number(scale_cut = scales::cut_long_scale()))
+partial_4 <- partial(glmnet_tune_noCCAA, pred.var = "logPop", plot = F) |> 
+  ggplot(aes(y = yhat, x = logPop)) + geom_line() +
+  geom_point(color = "#000066")+# ylim(c(13,18))+
+  scale_x_continuous(labels = scales::label_number(scale_cut = scales::cut_long_scale())) 
+partial_5 <- partial(glmnet_tune_noCCAA, pred.var = "percentage_Eólica", plot = F) |> 
+  ggplot(aes(y = yhat, x = percentage_Eólica)) + geom_line() +
+  geom_point(color = "#000066")+ # ylim(c(13,18))+
+  scale_x_continuous(labels = scales::label_percent() )
+
+partial_6 <- partial(glmnet_tune_noCCAA, pred.var = "mas", plot = F) |> 
+  ggplot(aes(y = yhat, x = mas)) + geom_line() +
+  geom_point(color = "#000066")+ #ylim(c(13,18))+
+  scale_x_continuous(labels = scales::label_percent() ) 
+
+partial_glmnet_noCCAA <- (partial_1 + partial_3)/(partial_2 + partial_4) /(partial_5 + partial_6)
+
+ggsave(partial_glmnet_noCCAA, filename = "partial_glmnet_noCCAA.pdf", width = 7, height = 7, units = "in" )
+```
 
 # Results
 

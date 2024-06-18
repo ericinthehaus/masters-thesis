@@ -408,7 +408,7 @@ ctrl <- trainControl(method = "repeatedcv",
                      number = 10, repeats = 10)
 
 glmnet_tune <- train(data = agg_data2022,
-  energy_int ~ logEolica + issues_p + 
+  energy_int ~ logEolica + issues_p + logPop + 
   ns + mas + menos + igual + prec + I(prec^2) +
   logGenTotal + logPopden + month + 
   I(CCAAnombre == "Asturias") + land_area + percentage_Eólica,
@@ -446,7 +446,7 @@ The elastic net model does a lot better than the other linear models based off R
 
 ```{r}
 glmnet_tune_noCCAA <- train(
-  energy_int ~ logEolica + issues_p + ns + mas + menos + igual  +
+  energy_int ~ logEolica + issues_p + ns + mas + menos + igual  + logPop + 
   logGenTotal + logPopden + prec + I(prec^2) + tmax + land_area + percentage_Eólica , 
   data = agg_data2022,
                      method='glmnet',
