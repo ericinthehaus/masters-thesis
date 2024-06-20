@@ -811,9 +811,9 @@ subset_wind |>
 
 library(patchwork)
 
-pltA <- subset_total |> 
-  filter(date == as.Date("2023-10-31")) |> 
-  ggplot(aes(PIB, value)) +
+pltA <- agg_data |> 
+  filter(date == as.Date("2022-11-01")) |> 
+  ggplot(aes(x = GDP, y = GenTotal)) +
   geom_point() +
   geom_text(aes(label = CCAAnombre), 
             nudge_y = 0.05,
@@ -829,15 +829,14 @@ pltA <- subset_total |>
   labs(
     y = "Total energy generated - MWh",
     x = "Annual GDP - €",
-    subtitle = "Relationship on log scale, Oct 2023"
-  ) +
-  theme_bw()
+    subtitle = "Relationship on log scale, Oct 2022"
+  )
   
-pltB <- subset_total |> 
-  filter(date == as.Date("2023-10-31")) |> 
-  ggplot(aes(PIB, value)) +
+pltB <- agg_data |> 
+  filter(date == as.Date("2022-11-01")) |> 
+  ggplot(aes(x = GDP, y = GenTotal)) +
   geom_abline(
-    slope = c(1/100, 4/100), 
+    slope = c(1/90, 4/100), 
     color = "red4", 
     linetype = "dashed"
   ) +
@@ -855,9 +854,8 @@ pltB <- subset_total |>
   labs(
     y = "Total energy generated - MWh",
     x = "Annual GDP - €",
-    subtitle = "Relationship on linear scale, Oct 2023"
-  ) +
-  theme_bw()
+    subtitle = "Relationship on linear scale, Oct 2022"
+  ) 
 
 pltA + pltB + patchwork::plot_annotation(title = "Evidence of both log-log (A) and linear (B) relationship between energy and economic output", tag_levels = "A")
 ```

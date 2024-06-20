@@ -215,7 +215,13 @@ lmer_basic <- lmer(data = agg_data2022,
 
 lmer_large <- lmer(data = agg_data2022,
       energy_int ~ logEolica + mas + logPopden + logGenTotal + logPop + prec +
-      ( logEolica | CCAAnombre)+ (1 | month) )
+      ( logEolica | CCAAnombre)  + (1 | month) 
+      )
+
+lmer_large2 <- lmer(data = agg_data2022,
+      energy_int ~ logEolica + mas + logPopden + logGenTotal + logPop + prec +
+      ( 1 | CCAAnombre)  + (1 | month) 
+      )
 ```
 
 
@@ -231,7 +237,11 @@ modelsummary::modelsummary(list(lm_basic, lm_small, lm_large, lmer_basic, lmer_l
                            statistic = NULL
                 )
 
-ranef(lmer_large)
+modelsummary::modelsummary(list(lmer_basic, lmer_large, lmer_large2), 
+                           stars = T, 
+                           output = "lmer-models.png", 
+                           statistic = NULL
+                )
 ```
 
 ## Test on past years
