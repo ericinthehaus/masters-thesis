@@ -86,6 +86,67 @@ agg_data2022 <- agg_data |>
   ) 
 ```
 
+### Energy generation and GDP
+
+```{r energy-gdp, fig.width=11, fig.height=8, fig.cap="Energy Intensity", eval=FALSE}
+
+library(patchwork)
+
+pltA <- agg_data |> 
+  filter(date == as.Date("2022-11-01")) |> 
+  ggplot(aes(x = GDP, y = GenTotal)) +
+  geom_point() +
+  geom_text(aes(label = CCAAnombre), 
+            nudge_y = 0.05,
+            color = "gray30", size = 2) +
+  scale_x_continuous(
+    trans = "log10",
+   # labels = scales::label_number( scale_cut = scales::cut_long_scale())
+    ) +
+  scale_y_continuous(
+    trans = "log10",
+   # labels = scales::label_number( scale_cut = scales::cut_long_scale())
+  ) +
+  labs(
+    y = "Total energy generated - MWh",
+    x = "Annual GDP - €",
+    subtitle = "Relationship on log scale, Oct 2022"
+  )
+  
+pltB <- agg_data |> 
+  filter(date == as.Date("2022-11-01")) |> 
+  ggplot(aes(x = GDP, y = GenTotal)) +
+  geom_abline(
+    slope = c(1/90, 4/100), 
+    color = "red4", 
+    linetype = "dashed"
+  ) +
+  geom_point()  +
+  geom_text(aes(label = CCAAnombre), 
+           nudge_y = 50000, 
+            color = "gray30", size = 2
+          ) +
+  scale_x_continuous(
+   # labels = scales::label_number( scale_cut = scales::cut_long_scale())
+    ) +
+  scale_y_continuous(
+   # labels = scales::label_number( scale_cut = scales::cut_long_scale())
+  ) +
+  labs(
+    y = "Total energy generated - MWh",
+    x = "Annual GDP - €",
+    subtitle = "Relationship on linear scale, Oct 2022"
+  ) 
+
+pltA + pltB + patchwork::plot_annotation(title = "Evidence of both log-log (A) and linear (B) relationship between energy and economic output", tag_levels = "A")
+```
+
+Here an interesting thing appears: the regions with the largest population density (**Mellilla**, **Ceuta**, **Madrid**) are not shown because they do not produce any wind energy. But there still appears to be a negative relationship between density and wind energy, as a proportion of total energy. Except for **Extremadura**-- a clear outlier-- the sparsely populated regions like **Aragón** and the two "Castilla" comunidades generated a lot of their energy from wind.
+
+**Extremadura**, despite being one of the largest total energy generators, has basically zero wind energy.
+
+**Navarra** and **La Rioja** generate a lot of their energy from wind, despite being on the low end of total energy.
+
 ## Correlations 
 The Pearson's correlation between wind energy generated (MWh) and energy intensity (MWh/€) is `r cor(agg_data2022$Eolica, agg_data2022$energy_int)`. But the correlation changes to `r cor(agg_data2022$logEolica, agg_data2022$energy_int)` when you use the logged wind generation. That suggests that the relationship is log-linear. In other words, a multiplicative change to wind energy is associated with a linear unit of change in energy intensity. Since the correlation is positive, we can say that a multiplicative increase in wind energy is associated with a linear increase in energy intensity. 
 
