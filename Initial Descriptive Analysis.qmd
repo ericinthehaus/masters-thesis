@@ -807,7 +807,7 @@ subset_wind |>
 
 ### Energy generation and GDP
 
-```{r energy-gdp, fig.width=11, fig.height=8, fig.cap="Energy Intensity"}
+```{r energy-gdp, fig.width=11, fig.height=8, fig.cap="Energy Intensity", eval=FALSE}
 
 library(patchwork)
 
