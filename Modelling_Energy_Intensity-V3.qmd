@@ -88,7 +88,7 @@ agg_data2022 <- agg_data |>
 
 ### Energy generation and GDP
 
-```{r energy-gdp, fig.width=11, fig.height=8, fig.cap="Energy Intensity", eval=FALSE}
+```{r energy-gdp, fig.width=11, fig.height=8, fig.cap="Energy Intensity", eval=TRUE}
 
 library(patchwork)
 
