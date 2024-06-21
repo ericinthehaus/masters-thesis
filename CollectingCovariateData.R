@@ -180,8 +180,6 @@ climate_data <- full_join(AEMET_regions, clima.data, by = "CCAA") |>
 rm(list = c("clima.data", "AEMET_regions", "meses", 
             "PREC.raw", "TMAX.raw", "TMED.raw", "TMIN.raw"))
 
-mes_clima <- mes_clima |> 
-  mutate(month = factor(mes_num) )
 
 # Collect survey ----
 
@@ -343,5 +341,6 @@ land_area <- tribble(~CCAAnombre, ~Población, ~Superf,
 )
 
 
-save.image(file = "data.RData")
+# save.image(file = "data.RData")
+save.image()
 
