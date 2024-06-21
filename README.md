@@ -5,7 +5,7 @@
 ## "Modeling the Relationship Between Wind Energy Generation and Energy Intensity in Spain’s Autonomous Communities"
 
 ### Reproduction 
-Follow these steps to reproduce my analysis: 
+Download the zip file or clone the repository to your computer. Follow these steps to reproduce my analysis: 
 
 1) Run the file `collecting data.R`. This file will pull the data from Red Eléctrica's REData API. The data is already downloaded and in the repository in case you do not want to re-run the code (it will take some time to pull all the data). 
 2) Run file `CollectingCovariateData.R`. Here you will manipulate and join the downloaded data into a format you can use for the analysis part. This file is necessary to save the variables in the global environment. 
