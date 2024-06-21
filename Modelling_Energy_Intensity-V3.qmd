@@ -1,5 +1,5 @@
 ---
-title: "Modelling: 2nd Attempt"
+title: "Modelling"
 author: "Eric"
 abstract-title: "Main idea"
 abstract: |

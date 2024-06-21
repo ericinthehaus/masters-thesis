@@ -511,18 +511,3 @@ ggsave(comparisons_rmse, filename = "comparisons-rmse.pdf", width = 7, height = 
 ```
 
 
-# Conclusion
-
-This study provides insights into the factors influencing energy intensity across different regions. The results emphasize the importance of considering regional and temporal variations in energy policy planning. Future research should explore the underlying causes of the observed relationships and investigate additional variables that may impact energy intensity.
-
-# References
-
-(Include your references here, formatted according to the required citation style)
-
-# Appendices
-
-## Appendix A: Data Preprocessing Steps
-
-## Appendix B: Detailed Model Outputs
-
-## Appendix C: Additional Figures and Tables

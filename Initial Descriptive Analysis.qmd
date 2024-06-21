@@ -890,16 +890,6 @@ Here are key takeaways:
 
 4.  Survey results show that different regions vary on opinions about the environment and energy. However, the data show that it is likely that most people, in most CCAA, believe that environmental degradation will get worse. It appears that the most densely populated CCAA have a higher likelihood of having more people believe that climate and energy-related issues are the most important in Spain nowadays.
 
-## Possible next steps:
-
-a)  PCA to find groups or clusters of CCAA
-
-b)  research more literature and discuss with experts
-
-c)  Regression models with all data
-
-d)  Check for autocorrelation across time
-
 ## Notes with Prof Pablo
 
 GDP per capita would be useful as covariate.
@@ -1138,16 +1128,6 @@ PIVOT_data_pop_pib_land_energy |>
 
 1.  **Extremadura** is an outlier in no wind. Why?
 2.  Aragón is
-
-```         
-```
-
-```{r}
-library(lme4) 
-lmm1 <- lme4::lmer(value.y ~ date.x + (1 | CCAAnombre) + PIB , 
-                   data = PIVOT_data_pop_pib_land_energy)
-summary(lmm1)
-```
 
 ```{r}
 save.image()

@@ -37,67 +37,6 @@ red_regions <- tribble(~name, ~id,
 token.key <- "e8b975f02fb9c7865331361679409925547e18e8e86f72166c105eadf5d0c149"
 httpheader <- paste0("Authorization: Token token = '", token.key, "'")
 
-## next steps ----
-
-#' issue (a) this API only allows 24 months at one pull for monthly data
-#' issue (b) this API only allows one geolocation at one pull 
-#' next step (A) look for data to pair with this
-#' what is the target variable?
-#' what are the expalantory variables? 
-#'   i) demographic data for each month and ccaa 
-#'  ii) google search data for renewable energy 
-#' iii) survey data from pew, gallup \
-#' 
-
-## loop through each ccaa
-
-all_tbl.dat <- tibble()
-i <-  0
-for (i in 1:nrow(red_regions)) {
-  y <- red_regions[i, 1]
-  x <- red_regions[i, 2]
-  url <- paste0("https://apidatos.ree.es/es/datos/demanda/evolucion?",
-                "start_date=2021-01-01T00:00&end_date=2022-12-31T23:59&", 
-                "time_trunc=month&", 
-                "geo_trunc=electric_system&", 
-                "geo_limit=ccaa&geo_ids=", 
-                x)
-  
-  rawdata <- getURI(url, httpheader = httpheader) 
-  dat <- fromJSON(txt= rawdata)
-  
-  names <- dat$included$attributes$title
-  dat$included$attributes$type
-  values <- dat$included$attributes$values
-  
-  # convert to tibble
-  
-  tbl.dat <- tribble(~name, ~value, ~p, ~date)
-  
-  z <- length(dat$included$type) # get number of electricity types 
-  for (i in 1:z) {
-    name <- names[i]
-    d <- values[[i]]
-    
-    new.data <- d
-    new.data$name <- name
-    
-    tbl.dat = rbind(new.data, tbl.dat )
-  }
-  
-  ## convert date
-  
-  glimpse(tbl.dat)
-  tbl.dat <- tbl.dat |> 
-    mutate(date = lubridate::as_date(datetime),
-           ccaa = y$name
-    )
-  
-  all_tbl.dat <- rbind(all_tbl.dat, tbl.dat)
-    
-    Sys.sleep(1)
-}
-
 # loop through dates going back to 2014 ---- 
 
 pull_data <- function(start_date, end_date, category = "demanda", widget = "evolucion") {
