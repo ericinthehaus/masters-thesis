@@ -569,4 +569,7 @@ partial(knn_tune, pred.var = "CCAAnombre", plot = T)
 postResample(pred = test_results$knn,  obs = test_results$actual_2014)
 ```
 
+```{r}
+save.image()
+```
 
